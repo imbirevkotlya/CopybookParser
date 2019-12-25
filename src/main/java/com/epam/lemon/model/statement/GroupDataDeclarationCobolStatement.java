@@ -1,5 +1,6 @@
 package com.epam.lemon.model.statement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolStatement {
@@ -8,14 +9,10 @@ public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolS
     private final String name;
     private final List<DataDeclarationCobolStatement> childrenStatements;
 
-    public static GroupDataDeclarationCobolStatement buildStatement(String groupStatement) {
-        return new GroupDataDeclarationCobolStatement(null, null, null);
-    }
-
-    private GroupDataDeclarationCobolStatement(Integer level, String name, List<DataDeclarationCobolStatement> childrenStatements) {
+    public GroupDataDeclarationCobolStatement(Integer level, String name) {
         this.level = level;
         this.name = name;
-        this.childrenStatements = childrenStatements;
+        this.childrenStatements = new ArrayList<>();
     }
 
     @Override
@@ -30,5 +27,9 @@ public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolS
 
     public List<DataDeclarationCobolStatement> getChildrenStatements() {
         return childrenStatements;
+    }
+
+    public void addChildrenStatement(DataDeclarationCobolStatement childStatement) {
+        childrenStatements.add(childStatement);
     }
 }

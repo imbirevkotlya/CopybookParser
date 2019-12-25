@@ -8,14 +8,15 @@ import com.epam.lemon.model.parser.statement.GroupStatementParser;
 import com.epam.lemon.model.parser.statement.IntegerStatementParser;
 import com.epam.lemon.model.parser.statement.StatementParser;
 import com.epam.lemon.model.statement.DataDeclarationCobolStatement;
+import com.epam.lemon.model.statement.GroupDataDeclarationCobolStatement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class CopybookParser {
 
-    private static final String SPACE = " ";
+    private static final String VALUE_DECLARATION_KEYWORD = "PIC";
+
     private final List<StatementParser> statementParsers;
 
     public CopybookParser() {
@@ -29,18 +30,49 @@ public class CopybookParser {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         while (copybookStatementIterator.hasNext()) {
             String copybookStatement = copybookStatementIterator.next();
-            cobolStatements.add(parseStatement(copybookStatement));
+            DataDeclarationCobolStatement result;
+            if (copybookStatement.contains(VALUE_DECLARATION_KEYWORD)) {
+                result = parseRegularStatement(copybookStatement);
+            } else {
+                result = parseGroupStatementWithChildren(copybookStatementIterator, copybookStatement);
+            }
+            cobolStatements.add(result);
         }
         return new Copybook(cobolStatements);
     }
 
-    private DataDeclarationCobolStatement parseStatement(String copybookStatement) {
-        String[] statementAttributes = copybookStatement.split(SPACE);
+    private DataDeclarationCobolStatement parseRegularStatement(String statement) {
         for (StatementParser statementParser : statementParsers) {
-            if (statementParser.matchesStatement(copybookStatement)) {
-                return statementParser.parseStatement(copybookStatement);
+            if (statementParser.matchesStatement(statement)) {
+                return statementParser.parseStatement(statement);
             }
         }
         throw new InvalidStatementFormatException();
+    }
+
+    private DataDeclarationCobolStatement parseGroupStatementWithChildren(CopybookStatementIterator statementIterator, String statement) {
+        GroupDataDeclarationCobolStatement parentStatement = parseGroupStatement(statement);
+        while (statementIterator.hasNext()) {
+            String childrenStatement = statementIterator.next();
+            parseChildrenStatement(parentStatement, childrenStatement);
+        }
+        return parentStatement;
+    }
+
+    private GroupDataDeclarationCobolStatement parseGroupStatement(String statement) {
+        for (StatementParser statementParser : statementParsers) {
+            if (statementParser.matchesStatement(statement)) {
+                return (GroupDataDeclarationCobolStatement) statementParser.parseStatement(statement);
+            }
+        }
+        throw new InvalidStatementFormatException();
+    }
+
+    private void parseChildrenStatement(GroupDataDeclarationCobolStatement parentStatement, String childrenStatement) {
+        for (StatementParser statementParser : statementParsers) {
+            if (statementParser.matchesStatement(childrenStatement)) {
+                statementParser.parseStatementWithLinkToGroup(parentStatement, childrenStatement);
+            }
+        }
     }
 }

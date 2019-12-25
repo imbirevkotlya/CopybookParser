@@ -1,17 +1,28 @@
 package com.epam.lemon.model.parser.statement;
 
-import com.epam.lemon.model.exception.InvalidStatementFormatException;
 import com.epam.lemon.model.statement.DataDeclarationCobolStatement;
+import com.epam.lemon.model.statement.IntegerDeclarationCobolStatement;
 
-public class IntegerStatementParser implements StatementParser {
+import java.util.function.Function;
+
+public class IntegerStatementParser extends AbstractStatementParser {
 
     @Override
-    public boolean matchesStatement(String statement) {
-        return false;
+    protected String[] getNecessaryStatementAttributeFormats() {
+        String[] integerStatementAttributes = new String[4];
+        integerStatementAttributes[0] = "[0-4][1-9]";
+        integerStatementAttributes[1] = "^[^.]+$";
+        integerStatementAttributes[2] = "PIC";
+        integerStatementAttributes[3] = "^[9]*$";
+        return integerStatementAttributes;
     }
 
     @Override
-    public DataDeclarationCobolStatement parseStatement(String statement) throws InvalidStatementFormatException {
-        return null;
+    protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
+        return statementAttributes -> new IntegerDeclarationCobolStatement(
+                Integer.parseInt(statementAttributes[0]),
+                statementAttributes[3].length(),
+                statementAttributes[1]
+        );
     }
 }
