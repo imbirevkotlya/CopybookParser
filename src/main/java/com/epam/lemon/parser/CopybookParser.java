@@ -1,24 +1,38 @@
-package com.epam.lemon.model.parser;
+package com.epam.lemon.parser;
 
-import com.epam.lemon.model.copybook.CopybookStatementIterator;
-import com.epam.lemon.model.copybook.Copybook;
-import com.epam.lemon.model.exception.InvalidStatementFormatException;
-import com.epam.lemon.model.parser.statement.AlphanumericStatementParser;
-import com.epam.lemon.model.parser.statement.GroupStatementParser;
-import com.epam.lemon.model.parser.statement.IntegerStatementParser;
-import com.epam.lemon.model.parser.statement.StatementParser;
-import com.epam.lemon.model.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.model.statement.GroupDataDeclarationCobolStatement;
+import com.epam.lemon.copybook.Copybook;
+import com.epam.lemon.copybook.CopybookStatementIterator;
+import com.epam.lemon.exception.InvalidStatementFormatException;
+import com.epam.lemon.parser.statement.AlphanumericStatementParser;
+import com.epam.lemon.parser.statement.GroupStatementParser;
+import com.epam.lemon.parser.statement.IntegerStatementParser;
+import com.epam.lemon.parser.statement.StatementParser;
+import com.epam.lemon.statement.DataDeclarationCobolStatement;
+import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main class of the library for parsing the copybook.
+ * All the copybook statement rules can be found in the StatementParser implementations.
+ *
+ * General copybook rules:
+ *
+ * Copybook should contains only fields description,
+ * without any numbers and so on (even if they are in comment block in the source file).
+ * Each statement should have '.' after it declaration.
+ *
+ */
 public class CopybookParser {
 
-    private static final String VALUE_DECLARATION_KEYWORD = "PIC";
+    public static final String VALUE_DECLARATION_KEYWORD = "PIC";
 
     private final List<StatementParser> statementParsers;
 
+    /**
+     * Main parser constructor to initialize the statement parsers, which it will use.
+     */
     public CopybookParser() {
         statementParsers = new ArrayList<>();
         statementParsers.add(new IntegerStatementParser());
@@ -26,7 +40,13 @@ public class CopybookParser {
         statementParsers.add(new GroupStatementParser());
     }
 
-    public Copybook parse(CopybookStatementIterator copybookStatementIterator) {
+    /**
+     * Method to parse the copybook using the copybook iterator.
+     * @param copybookStatementIterator the copybook statement iterator to work with copybook statements one by one
+     * @return the completed copybook class with statements inside it
+     * @throws InvalidStatementFormatException if copybook format is wrong or not supported
+     */
+    public Copybook parse(CopybookStatementIterator copybookStatementIterator) throws InvalidStatementFormatException {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         while (copybookStatementIterator.hasNext()) {
             String copybookStatement = copybookStatementIterator.next();
@@ -47,7 +67,7 @@ public class CopybookParser {
                 return statementParser.parseStatement(statement);
             }
         }
-        throw new InvalidStatementFormatException();
+        throw new InvalidStatementFormatException(statement);
     }
 
     private DataDeclarationCobolStatement parseGroupStatementWithChildren(CopybookStatementIterator statementIterator, String statement) {
@@ -65,14 +85,16 @@ public class CopybookParser {
                 return (GroupDataDeclarationCobolStatement) statementParser.parseStatement(statement);
             }
         }
-        throw new InvalidStatementFormatException();
+        throw new InvalidStatementFormatException(statement);
     }
 
     private void parseChildrenStatement(GroupDataDeclarationCobolStatement parentStatement, String childrenStatement) {
         for (StatementParser statementParser : statementParsers) {
             if (statementParser.matchesStatement(childrenStatement)) {
                 statementParser.parseStatementWithLinkToGroup(parentStatement, childrenStatement);
+                return;
             }
         }
+        throw new InvalidStatementFormatException(childrenStatement);
     }
 }
