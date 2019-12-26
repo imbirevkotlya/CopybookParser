@@ -44,8 +44,9 @@ public class CopybookParser {
      * Method to parse the copybook using the copybook iterator.
      * @param copybookStatementIterator the copybook statement iterator to work with copybook statements one by one
      * @return the completed copybook class with statements inside it
+     * @throws InvalidStatementFormatException if copybook format is wrong or not supported
      */
-    public Copybook parse(CopybookStatementIterator copybookStatementIterator) {
+    public Copybook parse(CopybookStatementIterator copybookStatementIterator) throws InvalidStatementFormatException {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         while (copybookStatementIterator.hasNext()) {
             String copybookStatement = copybookStatementIterator.next();
@@ -91,7 +92,9 @@ public class CopybookParser {
         for (StatementParser statementParser : statementParsers) {
             if (statementParser.matchesStatement(childrenStatement)) {
                 statementParser.parseStatementWithLinkToGroup(parentStatement, childrenStatement);
+                return;
             }
         }
+        throw new InvalidStatementFormatException(childrenStatement);
     }
 }

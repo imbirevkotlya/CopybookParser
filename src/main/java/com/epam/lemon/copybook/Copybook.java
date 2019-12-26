@@ -6,7 +6,6 @@ import com.epam.lemon.statement.StatementType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Illustrates the main COBOL business object for data representing.
@@ -97,9 +96,21 @@ public class Copybook {
      * @return the collection of the items with this level, or empty collection, if such level is not presented
      */
     public List<DataDeclarationCobolStatement> getStatementsByLevel(Integer level) {
-        return cobolStatements.stream()
-                .filter(statement -> statement.getLevel().equals(level))
-                .collect(Collectors.toList());
+        ArrayList<DataDeclarationCobolStatement> resultStatementList = new ArrayList<>();
+        for (DataDeclarationCobolStatement cobolStatement : cobolStatements) {
+            if (StatementType.GROUP_STATEMENT.equals(cobolStatement.getStatementType())) {
+                GroupDataDeclarationCobolStatement groupStatement = (GroupDataDeclarationCobolStatement) cobolStatement;
+                for (DataDeclarationCobolStatement childStatement : groupStatement.getChildrenStatements()) {
+                    if (childStatement.getLevel().equals(level)) {
+                        resultStatementList.add(childStatement);
+                    }
+                }
+            }
+            if (cobolStatement.getLevel().equals(level)) {
+                resultStatementList.add(cobolStatement);
+            }
+        }
+        return resultStatementList;
     }
 
 }
