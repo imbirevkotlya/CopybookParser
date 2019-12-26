@@ -1,4 +1,4 @@
-package com.epam.lemon.model.statement;
+package com.epam.lemon.statement;
 
 
 public interface DataDeclarationCobolStatement {
@@ -14,5 +14,11 @@ public interface DataDeclarationCobolStatement {
      * @return the name of the data declaration cobol statement
      */
     String getName();
+
+    /**
+     *
+     * @return
+     */
+    StatementType getStatementType();
 
 }

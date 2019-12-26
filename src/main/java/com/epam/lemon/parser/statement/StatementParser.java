@@ -1,8 +1,8 @@
-package com.epam.lemon.model.parser.statement;
+package com.epam.lemon.parser.statement;
 
-import com.epam.lemon.model.exception.InvalidStatementFormatException;
-import com.epam.lemon.model.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.model.statement.GroupDataDeclarationCobolStatement;
+import com.epam.lemon.exception.InvalidStatementFormatException;
+import com.epam.lemon.statement.DataDeclarationCobolStatement;
+import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
 
 public interface StatementParser {
 

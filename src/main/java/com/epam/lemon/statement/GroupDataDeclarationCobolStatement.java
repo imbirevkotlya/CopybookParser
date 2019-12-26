@@ -1,4 +1,4 @@
-package com.epam.lemon.model.statement;
+package com.epam.lemon.statement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,11 @@ public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolS
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public StatementType getStatementType() {
+        return StatementType.GROUP_STATEMENT;
     }
 
     public List<DataDeclarationCobolStatement> getChildrenStatements() {

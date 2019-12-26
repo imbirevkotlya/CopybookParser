@@ -1,4 +1,4 @@
-package com.epam.lemon.model.statement;
+package com.epam.lemon.statement;
 
 public interface RegularDataDeclarationCobolStatement extends DataDeclarationCobolStatement {
 

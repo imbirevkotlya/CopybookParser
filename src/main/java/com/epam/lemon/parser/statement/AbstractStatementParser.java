@@ -1,9 +1,9 @@
-package com.epam.lemon.model.parser.statement;
+package com.epam.lemon.parser.statement;
 
 
-import com.epam.lemon.model.exception.InvalidStatementFormatException;
-import com.epam.lemon.model.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.model.statement.GroupDataDeclarationCobolStatement;
+import com.epam.lemon.exception.InvalidStatementFormatException;
+import com.epam.lemon.statement.DataDeclarationCobolStatement;
+import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
@@ -58,6 +58,6 @@ public abstract class AbstractStatementParser implements StatementParser {
         if (matchesStatement(statementAttributes)) {
             return getBuildStatementFunction().apply(statementAttributes);
         }
-        throw new InvalidStatementFormatException();
+        throw new InvalidStatementFormatException(statement);
     }
 }

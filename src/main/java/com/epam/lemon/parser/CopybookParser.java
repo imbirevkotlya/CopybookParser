@@ -1,14 +1,14 @@
-package com.epam.lemon.model.parser;
+package com.epam.lemon.parser;
 
-import com.epam.lemon.model.copybook.CopybookStatementIterator;
-import com.epam.lemon.model.copybook.Copybook;
-import com.epam.lemon.model.exception.InvalidStatementFormatException;
-import com.epam.lemon.model.parser.statement.AlphanumericStatementParser;
-import com.epam.lemon.model.parser.statement.GroupStatementParser;
-import com.epam.lemon.model.parser.statement.IntegerStatementParser;
-import com.epam.lemon.model.parser.statement.StatementParser;
-import com.epam.lemon.model.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.model.statement.GroupDataDeclarationCobolStatement;
+import com.epam.lemon.copybook.Copybook;
+import com.epam.lemon.copybook.CopybookStatementIterator;
+import com.epam.lemon.exception.InvalidStatementFormatException;
+import com.epam.lemon.parser.statement.AlphanumericStatementParser;
+import com.epam.lemon.parser.statement.GroupStatementParser;
+import com.epam.lemon.parser.statement.IntegerStatementParser;
+import com.epam.lemon.parser.statement.StatementParser;
+import com.epam.lemon.statement.DataDeclarationCobolStatement;
+import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class CopybookParser {
                 return statementParser.parseStatement(statement);
             }
         }
-        throw new InvalidStatementFormatException();
+        throw new InvalidStatementFormatException(statement);
     }
 
     private DataDeclarationCobolStatement parseGroupStatementWithChildren(CopybookStatementIterator statementIterator, String statement) {
@@ -65,7 +65,7 @@ public class CopybookParser {
                 return (GroupDataDeclarationCobolStatement) statementParser.parseStatement(statement);
             }
         }
-        throw new InvalidStatementFormatException();
+        throw new InvalidStatementFormatException(statement);
     }
 
     private void parseChildrenStatement(GroupDataDeclarationCobolStatement parentStatement, String childrenStatement) {

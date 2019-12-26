@@ -1,4 +1,4 @@
-package com.epam.lemon.model.statement;
+package com.epam.lemon.statement;
 
 public class AlphanumericDeclarationCobolStatement implements RegularDataDeclarationCobolStatement {
 
@@ -30,5 +30,10 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public StatementType getStatementType() {
+        return StatementType.ALPHANUMERIC_STATEMENT;
     }
 }
