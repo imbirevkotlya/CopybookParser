@@ -13,12 +13,26 @@ import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main class of the library for parsing the copybook.
+ * All the copybook statement rules can be found in the StatementParser implementations.
+ *
+ * General copybook rules:
+ *
+ * Copybook should contains only fields description,
+ * without any numbers and so on (even if they are in comment block in the source file).
+ * Each statement should have '.' after it declaration.
+ *
+ */
 public class CopybookParser {
 
-    private static final String VALUE_DECLARATION_KEYWORD = "PIC";
+    public static final String VALUE_DECLARATION_KEYWORD = "PIC";
 
     private final List<StatementParser> statementParsers;
 
+    /**
+     * Main parser constructor to initialize the statement parsers, which it will use.
+     */
     public CopybookParser() {
         statementParsers = new ArrayList<>();
         statementParsers.add(new IntegerStatementParser());
@@ -26,6 +40,11 @@ public class CopybookParser {
         statementParsers.add(new GroupStatementParser());
     }
 
+    /**
+     * Method to parse the copybook using the copybook iterator.
+     * @param copybookStatementIterator the copybook statement iterator to work with copybook statements one by one
+     * @return the completed copybook class with statements inside it
+     */
     public Copybook parse(CopybookStatementIterator copybookStatementIterator) {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         while (copybookStatementIterator.hasNext()) {

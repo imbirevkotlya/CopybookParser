@@ -1,28 +1,57 @@
 package com.epam.lemon.parser.statement;
 
+import com.epam.lemon.parser.CopybookParser;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 import com.epam.lemon.statement.IntegerDeclarationCobolStatement;
 
 import java.util.function.Function;
 
+/**
+ * COBOL integer statement contains only 4 attributes: level, name, PIC keyword, length declaration (only 9 are supported)
+ *
+ * Example:
+ *
+ * 01 NAME PIC 999.
+ *
+ * NOTICE:
+ * Not supported example:
+ *
+ * 01 NAME PIC 9(3).
+ *
+ * Should be:
+ *
+ * 01 NAME PIC 999.
+ *
+ */
 public class IntegerStatementParser extends AbstractStatementParser {
 
+    private static final int LEVEL = 0;
+    private static final int NAME = 1;
+    private static final int VALUE_DECLARATION_KEYWORD = 2;
+    private static final int LENGTH_DECLARATION = 3;
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
         String[] integerStatementAttributes = new String[4];
-        integerStatementAttributes[0] = "[0-4][1-9]";
-        integerStatementAttributes[1] = "^[^.]+$";
-        integerStatementAttributes[2] = "PIC";
-        integerStatementAttributes[3] = "^[9]*$";
+        integerStatementAttributes[LEVEL] = LEVEL_PATTERN;
+        integerStatementAttributes[NAME] = NAME_PATTERN;
+        integerStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
+        integerStatementAttributes[LENGTH_DECLARATION] = "^[9]*$";
         return integerStatementAttributes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
         return statementAttributes -> new IntegerDeclarationCobolStatement(
-                Integer.parseInt(statementAttributes[0]),
-                statementAttributes[3].length(),
-                statementAttributes[1]
+                Integer.parseInt(statementAttributes[LEVEL]),
+                statementAttributes[LENGTH_DECLARATION].length(),
+                statementAttributes[NAME]
         );
     }
 }
