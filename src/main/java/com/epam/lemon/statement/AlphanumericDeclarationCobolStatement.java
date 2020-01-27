@@ -1,5 +1,7 @@
 package com.epam.lemon.statement;
 
+import java.util.Objects;
+
 /**
  * Model represents the cobol alphanumeric statements.
  *
@@ -53,5 +55,20 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
     @Override
     public StatementType getStatementType() {
         return StatementType.ALPHANUMERIC_STATEMENT;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AlphanumericDeclarationCobolStatement that = (AlphanumericDeclarationCobolStatement) o;
+        return level.equals(that.level) &&
+                length.equals(that.length) &&
+                name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(level, length, name);
     }
 }
