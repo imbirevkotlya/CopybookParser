@@ -1,5 +1,7 @@
 package com.epam.lemon.statement;
 
+import java.util.Objects;
+
 public class CompDataDeclarationStatement implements RegularDataDeclarationCobolStatement {
 
     private final Integer length;
@@ -30,5 +32,20 @@ public class CompDataDeclarationStatement implements RegularDataDeclarationCobol
     @Override
     public StatementType getStatementType() {
         return StatementType.COMP_STATEMENT;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompDataDeclarationStatement that = (CompDataDeclarationStatement) o;
+        return length.equals(that.length) &&
+                level.equals(that.level) &&
+                name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(length, level, name);
     }
 }
