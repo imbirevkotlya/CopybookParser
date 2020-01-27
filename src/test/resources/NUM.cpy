@@ -1,0 +1,2 @@
+           05 EMP-SURNAME PIC 99.
+           05 EMP-POSITION PIC 9.
