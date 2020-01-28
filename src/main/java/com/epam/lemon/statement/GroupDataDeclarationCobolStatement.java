@@ -59,6 +59,9 @@ public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolS
         childrenStatements.add(childStatement);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,6 +72,9 @@ public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolS
                 childrenStatements.equals(that.childrenStatements);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(level, name, childrenStatements);

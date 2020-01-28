@@ -6,6 +6,14 @@ import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
+/**
+ * COBOL computational statement contains 5 attributes: level,name, pic keyword, digit length declaration, comp keyword
+ *
+ * Example:
+ *
+ * 01 COMP-NAME PIC 99 COMP.
+ *
+ */
 public class CompStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
@@ -28,6 +36,9 @@ public class CompStatementParser extends AbstractStatementParser {
         return compStatementAttributes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
         return statementAttributes -> new CompDataDeclarationStatement(

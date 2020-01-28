@@ -61,6 +61,9 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
         return StatementType.INTEGER_STATEMENT;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,6 +74,9 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
                 name.equals(that.name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(level, length, name);
