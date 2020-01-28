@@ -2,6 +2,7 @@ package com.epam.lemon.statement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Model represents the cobol group statements.
@@ -56,5 +57,26 @@ public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolS
 
     public void addChildrenStatement(DataDeclarationCobolStatement childStatement) {
         childrenStatements.add(childStatement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GroupDataDeclarationCobolStatement that = (GroupDataDeclarationCobolStatement) o;
+        return level.equals(that.level) &&
+                name.equals(that.name) &&
+                childrenStatements.equals(that.childrenStatements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(level, name, childrenStatements);
     }
 }

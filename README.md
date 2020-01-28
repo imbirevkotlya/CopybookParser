@@ -42,23 +42,23 @@ Prerequisites:
 
 ### Versioning
 
-- Now, the 1.0-SNAPSHOT version is released with simple functions
-- In development stage: 1.1-SNAPSHOT version with COMP fields support
-- In plans: 1.2-SNAPSHOT version with DEFAULT values support
+- Now, the 1.1-SNAPSHOT version is released with COMP fields support
+- In development stage: 1.2-SNAPSHOT version with DEFAULT values support
+- In plans: 1.3-SNAPSHOT version with COMP-1,COMP-2,COMP-3 fields support
 - ...
 
 ### Acknowledges
 
 Supported copybook formats:
 
-- only integer numeric, alphanumeric, group fields are supported
+- only integer numeric, alphanumeric, group, simple comp fields are supported
 - only field declarations with XXX (not X(2)) are supported
 - no default values supported
 - no any other digits or symbols supported (even if they in comment zone)
-- no comps, arrays, redefines are supported
+- no comps-1,comp-2,comp-3, arrays, redefines are supported
 - no comments are supported
 - no nested groups or several groups are supported
-- the example of valid copybook can be found in path: <project_root>/src/test/resource/PERSINFO.cpy
+- the example of valid copybooks can be found in path: <project_root>/src/test/resource/
 
 ### Licensing
 

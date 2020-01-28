@@ -1,5 +1,7 @@
 package com.epam.lemon.statement;
 
+import java.util.Objects;
+
 /**
  * Model represents the cobol integer numeric statements.
  *
@@ -57,5 +59,26 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
     @Override
     public StatementType getStatementType() {
         return StatementType.INTEGER_STATEMENT;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IntegerDeclarationCobolStatement that = (IntegerDeclarationCobolStatement) o;
+        return level.equals(that.level) &&
+                length.equals(that.length) &&
+                name.equals(that.name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(level, length, name);
     }
 }

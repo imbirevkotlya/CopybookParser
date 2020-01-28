@@ -15,5 +15,10 @@ public enum StatementType {
     /**
      * Constant for the AlphanumericDeclarationCobolStatement
      */
-    ALPHANUMERIC_STATEMENT
+    ALPHANUMERIC_STATEMENT,
+
+    /**
+     * Constant for the CompDeclarationCobolStatement
+     */
+    COMP_STATEMENT
 }

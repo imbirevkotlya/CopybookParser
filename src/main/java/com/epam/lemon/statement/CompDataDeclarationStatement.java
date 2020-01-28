@@ -3,14 +3,14 @@ package com.epam.lemon.statement;
 import java.util.Objects;
 
 /**
- * Model represents the cobol alphanumeric statements.
+ * The class represents COBOL computational statement.
  *
- * Description can be found here - https://www.mainframestechhelp.com/tutorials/cobol/cobol-alphanumeric-data-type.htm
+ * Description can be found here: https://www.mainframestechhelp.com/tutorials/cobol/cobol-computation.htm
  */
-public class AlphanumericDeclarationCobolStatement implements RegularDataDeclarationCobolStatement {
+public class CompDataDeclarationStatement implements RegularDataDeclarationCobolStatement {
 
-    private final Integer level;
     private final Integer length;
+    private final Integer level;
     private final String name;
 
     /**
@@ -19,9 +19,9 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
      * @param length is a field length
      * @param name is a field length
      */
-    public AlphanumericDeclarationCobolStatement(Integer level, Integer length, String name) {
-        this.level = level;
+    public CompDataDeclarationStatement(Integer level, Integer length, String name) {
         this.length = length;
+        this.level = level;
         this.name = name;
     }
 
@@ -54,7 +54,7 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
      */
     @Override
     public StatementType getStatementType() {
-        return StatementType.ALPHANUMERIC_STATEMENT;
+        return StatementType.COMP_STATEMENT;
     }
 
     /**
@@ -64,9 +64,9 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AlphanumericDeclarationCobolStatement that = (AlphanumericDeclarationCobolStatement) o;
-        return level.equals(that.level) &&
-                length.equals(that.length) &&
+        CompDataDeclarationStatement that = (CompDataDeclarationStatement) o;
+        return length.equals(that.length) &&
+                level.equals(that.level) &&
                 name.equals(that.name);
     }
 
@@ -75,6 +75,6 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
      */
     @Override
     public int hashCode() {
-        return Objects.hash(level, length, name);
+        return Objects.hash(length, level, name);
     }
 }

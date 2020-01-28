@@ -1,11 +1,9 @@
 package com.epam.lemon.copybook;
 
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
-import com.epam.lemon.statement.StatementType;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Illustrates the main COBOL business object for data representing.
@@ -58,59 +56,16 @@ public class Copybook {
         this.cobolStatements = cobolStatements;
     }
 
-    /**
-     * Provide a copy of the copybook statements (group statements will contain the children statements inside it).
-     * @return the ordered list of the cobol data declaration statements in this copybook
-     */
-    public List<DataDeclarationCobolStatement> getCobolStatements() {
-        return new ArrayList<>(cobolStatements);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Copybook copybook = (Copybook) o;
+        return cobolStatements.equals(copybook.cobolStatements);
     }
 
-    /**
-     * Return the statements with the same name as passed. The search will be done in the regular statements and also
-     * from the children statements in each group.
-     * If statements has the same name - first will be found (from up to down).
-     * @param name the name of the statement to find
-     * @return the data declaration statement or null (if nothing was found).
-     */
-    public DataDeclarationCobolStatement getStatementByName(String name) {
-        for (DataDeclarationCobolStatement cobolStatement : cobolStatements) {
-            if (StatementType.GROUP_STATEMENT.equals(cobolStatement.getStatementType())) {
-                GroupDataDeclarationCobolStatement groupStatement = (GroupDataDeclarationCobolStatement) cobolStatement;
-                for (DataDeclarationCobolStatement childStatement : groupStatement.getChildrenStatements()) {
-                    if (childStatement.getName().equalsIgnoreCase(name)) {
-                        return childStatement;
-                    }
-                }
-            }
-            if (cobolStatement.getName().equalsIgnoreCase(name)) {
-                return cobolStatement;
-            }
-        }
-        return null;
+    @Override
+    public int hashCode() {
+        return Objects.hash(cobolStatements);
     }
-
-    /**
-     * Return the cobol statements from the copybook with the same level as provided.
-     * @param level the level to find the statements
-     * @return the collection of the items with this level, or empty collection, if such level is not presented
-     */
-    public List<DataDeclarationCobolStatement> getStatementsByLevel(Integer level) {
-        ArrayList<DataDeclarationCobolStatement> resultStatementList = new ArrayList<>();
-        for (DataDeclarationCobolStatement cobolStatement : cobolStatements) {
-            if (StatementType.GROUP_STATEMENT.equals(cobolStatement.getStatementType())) {
-                GroupDataDeclarationCobolStatement groupStatement = (GroupDataDeclarationCobolStatement) cobolStatement;
-                for (DataDeclarationCobolStatement childStatement : groupStatement.getChildrenStatements()) {
-                    if (childStatement.getLevel().equals(level)) {
-                        resultStatementList.add(childStatement);
-                    }
-                }
-            }
-            if (cobolStatement.getLevel().equals(level)) {
-                resultStatementList.add(cobolStatement);
-            }
-        }
-        return resultStatementList;
-    }
-
 }

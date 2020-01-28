@@ -3,59 +3,90 @@ package com.epam.lemon.parser;
 import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.copybook.CopybookStatementIterator;
 import com.epam.lemon.exception.InvalidStatementFormatException;
-import com.epam.lemon.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
-import com.epam.lemon.statement.RegularDataDeclarationCobolStatement;
-import com.epam.lemon.statement.StatementType;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 public class ParserTest {
 
     @Test
-    public void parse() throws IOException {
-        CopybookStatementIterator copybookStatementIterator = new CopybookStatementIterator(Files.readAllBytes(Path.of("src/test/resources/PERSINFO.cpy")));
+    public void parseCopybook_withNumericValues() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithNumericDefinition();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser().parse(copybookStatementIterator);
+        Copybook copybook = new CopybookParser().parse(statementIterator);
 
-        List<DataDeclarationCobolStatement> actualStatements = copybook.getCobolStatements();
-        Assert.assertEquals(1, actualStatements.size());
-        DataDeclarationCobolStatement actualStatement = actualStatements.get(0);
-        Assert.assertEquals(StatementType.GROUP_STATEMENT, actualStatement.getStatementType());
-        Assert.assertEquals(1, actualStatement.getLevel().intValue());
-        Assert.assertEquals("EMP-RECORD", actualStatement.getName());
-        GroupDataDeclarationCobolStatement groupActualStatement = (GroupDataDeclarationCobolStatement) actualStatement;
-        Assert.assertEquals(3, groupActualStatement.getChildrenStatements().size());
-        List<DataDeclarationCobolStatement> actualStatementsWithFiveLevel = copybook.getStatementsByLevel(5);
-        Assert.assertEquals(3, actualStatementsWithFiveLevel.size());
-        Assert.assertEquals(StatementType.INTEGER_STATEMENT, copybook.getStatementByName("EMP-NAME").getStatementType());
-        Assert.assertEquals(StatementType.ALPHANUMERIC_STATEMENT, copybook.getStatementByName("EMP-SURNAME").getStatementType());
-        Assert.assertEquals(1, ((RegularDataDeclarationCobolStatement) copybook.getStatementByName("EMP-POSITION")).getLength().intValue());
+        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
     }
 
     @Test(expected = InvalidStatementFormatException.class)
-    public void parseInvalidGroup() throws IOException {
-        CopybookStatementIterator copybookStatementIterator = new CopybookStatementIterator(Files.readAllBytes(Path.of("src/test/resources/INVALID_GROUP.cpy")));
+    public void parseCopybook_invalidNumericFieldDeclaration() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidNumericFieldDeclaration();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser().parse(copybookStatementIterator);
+        new CopybookParser().parse(statementIterator);
+    }
+
+    @Test
+    public void parseCopybook_alphanumericValues() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithAlphanumericDefinition();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        Copybook copybook = new CopybookParser().parse(statementIterator);
+
+        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
     }
 
     @Test(expected = InvalidStatementFormatException.class)
-    public void parseInvalidNumeric() throws IOException {
-        CopybookStatementIterator copybookStatementIterator = new CopybookStatementIterator(Files.readAllBytes(Path.of("src/test/resources/INVALID_NUM.cpy")));
+    public void parseCopybook_invalidAlphanumericFieldDeclaration() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidAlphanumericFieldDeclaration();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser().parse(copybookStatementIterator);
+        new CopybookParser().parse(statementIterator);
+    }
+
+    @Test
+    public void parseCopybook_groupValues() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithGroupFieldDefinition();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        Copybook copybook = new CopybookParser().parse(statementIterator);
+
+        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
     }
 
     @Test(expected = InvalidStatementFormatException.class)
-    public void parseInvalidAlphanumeric() throws IOException {
-        CopybookStatementIterator copybookStatementIterator = new CopybookStatementIterator(Files.readAllBytes(Path.of("src/test/resources/INVALID_ALPHA.cpy")));
+    public void parseCopybook_invalidGroupFieldDeclaration() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidGroupFieldDeclaration();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser().parse(copybookStatementIterator);
+        new CopybookParser().parse(statementIterator);
+    }
+
+    @Test
+    public void parseCopybook_withCompFields() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithCompFields();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        Copybook copybook = new CopybookParser().parse(statementIterator);
+
+        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+    }
+
+    @Test(expected = InvalidStatementFormatException.class)
+    public void parse_invalidCompFieldDeclaration() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidCompFieldDeclaration();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        new CopybookParser().parse(statementIterator);
+    }
+
+    @Test(expected = InvalidStatementFormatException.class)
+    public void parse_invalidCompFieldDataFormatDeclaration() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidCompFieldDataFormatDeclaration();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        new CopybookParser().parse(statementIterator);
     }
 }

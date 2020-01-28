@@ -3,10 +3,7 @@ package com.epam.lemon.parser;
 import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.copybook.CopybookStatementIterator;
 import com.epam.lemon.exception.InvalidStatementFormatException;
-import com.epam.lemon.parser.statement.AlphanumericStatementParser;
-import com.epam.lemon.parser.statement.GroupStatementParser;
-import com.epam.lemon.parser.statement.IntegerStatementParser;
-import com.epam.lemon.parser.statement.StatementParser;
+import com.epam.lemon.parser.statement.*;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
 
@@ -38,6 +35,7 @@ public class CopybookParser {
         statementParsers.add(new IntegerStatementParser());
         statementParsers.add(new AlphanumericStatementParser());
         statementParsers.add(new GroupStatementParser());
+        statementParsers.add(new CompStatementParser());
     }
 
     /**
