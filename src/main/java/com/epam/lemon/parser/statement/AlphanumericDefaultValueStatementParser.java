@@ -5,7 +5,7 @@ import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
-public class AlphanumericDefaultValueStatementParser extends AlphanumericStatementParser {
+public class AlphanumericDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
     private static final int NAME = 1;
@@ -21,9 +21,15 @@ public class AlphanumericDefaultValueStatementParser extends AlphanumericStateme
     private static final String EMPTY_STRING = "";
     private static final String SINGLE_QUOTE = "'";
 
+    private final AlphanumericStatementParser alphanumericStatementParser;
+
+    public AlphanumericDefaultValueStatementParser(AlphanumericStatementParser alphanumericStatementParser) {
+        this.alphanumericStatementParser = alphanumericStatementParser;
+    }
+
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
-        String[] necessaryStatementAttributeFormats = super.getNecessaryStatementAttributeFormats();
+        String[] necessaryStatementAttributeFormats = alphanumericStatementParser.getNecessaryStatementAttributeFormats();
         String[] defaultValueStatementAttributeFormats = getDefaultStatementAttributeFormats();
         ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats, defaultValueStatementAttributeFormats);
         return arrayMerger.merge();

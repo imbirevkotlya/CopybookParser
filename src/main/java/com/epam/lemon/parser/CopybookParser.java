@@ -31,14 +31,17 @@ public class CopybookParser {
      * Main parser constructor to initialize the statement parsers, which it will use.
      */
     public CopybookParser() {
+        CompStatementParser compStatementParser = new CompStatementParser();
+        IntegerStatementParser integerStatementParser = new IntegerStatementParser();
+        AlphanumericStatementParser alphanumericStatementParser = new AlphanumericStatementParser();
         statementParsers = new ArrayList<>();
-        statementParsers.add(new IntegerStatementParser());
-        statementParsers.add(new AlphanumericStatementParser());
+        statementParsers.add(integerStatementParser);
+        statementParsers.add(alphanumericStatementParser);
+        statementParsers.add(compStatementParser);
         statementParsers.add(new GroupStatementParser());
-        statementParsers.add(new CompStatementParser());
-        statementParsers.add(new AlphanumericDefaultValueStatementParser());
-        statementParsers.add(new IntegerDefaultValueStatementParser());
-        statementParsers.add(new CompDefaultValueStatementParser());
+        statementParsers.add(new AlphanumericDefaultValueStatementParser(alphanumericStatementParser));
+        statementParsers.add(new IntegerDefaultValueStatementParser(integerStatementParser));
+        statementParsers.add(new CompDefaultValueStatementParser(compStatementParser));
     }
 
     /**

@@ -5,7 +5,7 @@ import com.epam.lemon.statement.IntegerDeclarationCobolStatement;
 
 import java.util.function.Function;
 
-public class IntegerDefaultValueStatementParser extends IntegerStatementParser {
+public class IntegerDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
     private static final int NAME = 1;
@@ -18,9 +18,15 @@ public class IntegerDefaultValueStatementParser extends IntegerStatementParser {
     private static final int DEFAULT_VALUE_KEYWORD = 0;
     private static final int DEFAULT_VALUE = 1;
 
+    private final IntegerStatementParser integerStatementParser;
+
+    public IntegerDefaultValueStatementParser(IntegerStatementParser integerStatementParser) {
+        this.integerStatementParser = integerStatementParser;
+    }
+
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
-        String[] necessaryStatementAttributeFormats = super.getNecessaryStatementAttributeFormats();
+        String[] necessaryStatementAttributeFormats = integerStatementParser.getNecessaryStatementAttributeFormats();
         String[] defaultValueStatementAttributeFormats = getDefaultStatementAttributeFormats();
         ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats, defaultValueStatementAttributeFormats);
         return arrayMerger.merge();

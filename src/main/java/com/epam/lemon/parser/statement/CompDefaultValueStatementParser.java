@@ -5,7 +5,7 @@ import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
-public class CompDefaultValueStatementParser extends CompStatementParser {
+public class CompDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
     private static final int NAME = 1;
@@ -18,9 +18,15 @@ public class CompDefaultValueStatementParser extends CompStatementParser {
     private static final int DEFAULT_VALUE_KEYWORD = 0;
     private static final int DEFAULT_VALUE = 1;
 
+    private final CompStatementParser compStatementParser;
+
+    public CompDefaultValueStatementParser(CompStatementParser compStatementParser) {
+        this.compStatementParser = compStatementParser;
+    }
+
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
-        String[] necessaryStatementAttributeFormats = super.getNecessaryStatementAttributeFormats();
+        String[] necessaryStatementAttributeFormats = compStatementParser.getNecessaryStatementAttributeFormats();
         String[] defaultValueStatementAttributeFormats = getDefaultStatementAttributeFormats();
         ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats, defaultValueStatementAttributeFormats);
         return arrayMerger.merge();
