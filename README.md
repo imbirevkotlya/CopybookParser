@@ -42,9 +42,9 @@ Prerequisites:
 
 ### Versioning
 
-- Now, the 1.1-SNAPSHOT version is released with COMP fields support
-- In development stage: 1.2-SNAPSHOT version with DEFAULT values support
-- In plans: 1.3-SNAPSHOT version with COMP-1,COMP-2,COMP-3 fields support
+- Now, the 1.2-SNAPSHOT version with DEFAULT values support
+- In development stage: 1.3-SNAPSHOT version with COMP-1,COMP-2,COMP-3 fields support
+- In plans: 1.4-SNAPSHOT version with fixed size arrays support
 - ...
 
 ### Acknowledges
@@ -53,7 +53,6 @@ Supported copybook formats:
 
 - only integer numeric, alphanumeric, group, simple comp fields are supported
 - only field declarations with XXX (not X(2)) are supported
-- no default values supported
 - no any other digits or symbols supported (even if they in comment zone)
 - no comps-1,comp-2,comp-3, arrays, redefines are supported
 - no comments are supported

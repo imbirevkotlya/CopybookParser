@@ -1,5 +1,7 @@
 package com.epam.lemon.statement;
 
+import com.epam.lemon.exception.InvalidDefaultValueException;
+
 import java.util.Objects;
 
 /**
@@ -12,9 +14,10 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
     private final Integer level;
     private final Integer length;
     private final String name;
+    private final String defaultValue;
 
     /**
-     * Main statement constructor.
+     * Main statement constructor with statement based default value (" ").
      * @param level is a statement level
      * @param length is a field length
      * @param name is a field length
@@ -23,6 +26,46 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
         this.level = level;
         this.length = length;
         this.name = name;
+        defaultValue = initializeEmptyValue(this.length);
+    }
+
+    private String initializeEmptyValue(Integer length) {
+        char[] defaultValue = new char[length];
+        fillWithSpaces(defaultValue);
+        return new String(defaultValue);
+    }
+
+    private void fillWithSpaces(char[] defaultValue) {
+        char space = ' ';
+        for (int i = 0; i < defaultValue.length; i++) {
+            defaultValue[i] = space;
+        }
+    }
+
+    /**
+     * Main statement constructor.
+     * @param level is a statement level
+     * @param length is a field length
+     * @param name is a field length
+     * @param defaultValue is a field default value
+     */
+    public AlphanumericDeclarationCobolStatement(Integer level, Integer length, String name, String defaultValue) {
+        this.level = level;
+        this.length = length;
+        this.name = name;
+        validateDefaultValueSize(length, defaultValue);
+        this.defaultValue = initializeDefaultValue(defaultValue);
+    }
+
+    private void validateDefaultValueSize(Integer length, String defaultValue) {
+        if (defaultValue.length() > length) {
+            throw new InvalidDefaultValueException();
+        }
+    }
+
+    private String initializeDefaultValue(String defaultValue) {
+        String trailingSpaces = initializeEmptyValue(this.length - defaultValue.length());
+        return trailingSpaces + defaultValue;
     }
 
     /**
@@ -31,6 +74,14 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
     @Override
     public Integer getLength() {
         return length;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
     /**
@@ -67,7 +118,8 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
         AlphanumericDeclarationCobolStatement that = (AlphanumericDeclarationCobolStatement) o;
         return level.equals(that.level) &&
                 length.equals(that.length) &&
-                name.equals(that.name);
+                name.equals(that.name) &&
+                defaultValue.equals(that.defaultValue);
     }
 
     /**
@@ -75,6 +127,6 @@ public class AlphanumericDeclarationCobolStatement implements RegularDataDeclara
      */
     @Override
     public int hashCode() {
-        return Objects.hash(level, length, name);
+        return Objects.hash(level, length, name, defaultValue);
     }
 }

@@ -1,5 +1,8 @@
 package com.epam.lemon.statement;
 
+import com.epam.lemon.exception.InvalidDefaultValueException;
+
+import java.util.Formatter;
 import java.util.Objects;
 
 /**
@@ -12,9 +15,10 @@ public class CompDataDeclarationStatement implements RegularDataDeclarationCobol
     private final Integer length;
     private final Integer level;
     private final String name;
+    private final String defaultValue;
 
     /**
-     * Main statement constructor.
+     * Main statement constructor with statement based default value (0).
      * @param level is a statement level
      * @param length is a field length
      * @param name is a field length
@@ -23,6 +27,42 @@ public class CompDataDeclarationStatement implements RegularDataDeclarationCobol
         this.length = length;
         this.level = level;
         this.name = name;
+        defaultValue = initializeDefaultValue(0);
+    }
+
+    /**
+     * Main statement constructor.
+     * @param level is a statement level
+     * @param length is a field length
+     * @param name is a field length
+     * @param defaultValue is a field default value
+     */
+    public CompDataDeclarationStatement(Integer level, Integer length, String name, Integer defaultValue) {
+        this.length = length;
+        this.level = level;
+        this.name = name;
+        validateDefaultValueSize(length, defaultValue);
+        this.defaultValue = initializeDefaultValue(defaultValue);
+    }
+
+    /**
+     * The method to return mainframe based default value (with trailing zeroes).
+     * %% --> %
+     * 0  --> 0
+     * %d --> length
+     * d  --> defaultValue
+     * @param defaultValue is a raw java default value
+     * @return is a mainframe based default value
+     */
+    private String initializeDefaultValue(Integer defaultValue) {
+        String trailingZeroesFormat = new Formatter().format("%%0%dd", this.length).toString();
+        return new Formatter().format(trailingZeroesFormat, defaultValue).toString();
+    }
+
+    private void validateDefaultValueSize(Integer length, Integer defaultValue) {
+        if (defaultValue.toString().length() > length) {
+            throw new InvalidDefaultValueException();
+        }
     }
 
     /**
@@ -31,6 +71,14 @@ public class CompDataDeclarationStatement implements RegularDataDeclarationCobol
     @Override
     public Integer getLength() {
         return length;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
     /**
@@ -67,7 +115,8 @@ public class CompDataDeclarationStatement implements RegularDataDeclarationCobol
         CompDataDeclarationStatement that = (CompDataDeclarationStatement) o;
         return length.equals(that.length) &&
                 level.equals(that.level) &&
-                name.equals(that.name);
+                name.equals(that.name) &&
+                defaultValue.equals(that.defaultValue);
     }
 
     /**
@@ -75,6 +124,6 @@ public class CompDataDeclarationStatement implements RegularDataDeclarationCobol
      */
     @Override
     public int hashCode() {
-        return Objects.hash(length, level, name);
+        return Objects.hash(length, level, name, defaultValue);
     }
 }
