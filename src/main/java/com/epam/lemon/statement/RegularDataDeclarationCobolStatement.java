@@ -29,6 +29,15 @@ public interface RegularDataDeclarationCobolStatement extends DataDeclarationCob
      *
      * The value will be returned: 00.
      *
+     * If default value length less than field length - statement type default value will be used
+     * to support mainframe format.
+     *
+     * Example:
+     *
+     * 01 NAME PIC 999 VALUE 12.
+     *
+     * The value will be returned: 012.
+     *
      * @return the field default value
      */
     String getDefaultValue();
