@@ -1,5 +1,8 @@
 package com.epam.lemon.statement;
 
+import com.epam.lemon.exception.InvalidDefaultValueException;
+
+import java.util.Formatter;
 import java.util.Objects;
 
 /**
@@ -16,9 +19,45 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
     private final Integer level;
     private final Integer length;
     private final String name;
+    private final String defaultValue;
 
     /**
      * Main statement constructor.
+     * @param level is a statement level
+     * @param length is a field length
+     * @param name is a field length
+     * @param defaultValue is a field default value
+     */
+    public IntegerDeclarationCobolStatement(Integer level, Integer length, String name, Integer defaultValue) {
+        this.level = level;
+        this.length = length;
+        this.name = name;
+        validateTheDefaultValueSize(length, defaultValue);
+        this.defaultValue = initializeDefaultValue(defaultValue);
+    }
+
+    private void validateTheDefaultValueSize(Integer fieldLength, Integer defaultValue) {
+        if (defaultValue.toString().length() > fieldLength) {
+            throw new InvalidDefaultValueException();
+        }
+    }
+
+    /**
+     * The method to return mainframe based default value (with trailing zeroes).
+     * %% --> %
+     * 0  --> 0
+     * %d --> length
+     * d  --> defaultValue
+     * @param defaultValue is a raw java default value
+     * @return is a mainframe based default value
+     */
+    private String initializeDefaultValue(Integer defaultValue) {
+        String trailingZeroesFormat = new Formatter().format("%%0%dd", this.length).toString();
+        return new Formatter().format(trailingZeroesFormat, defaultValue).toString();
+    }
+
+    /**
+     * Main statement constructor with statement type default value specified (0).
      * @param level is a statement level
      * @param length is a field length
      * @param name is a field length
@@ -27,6 +66,7 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
         this.level = level;
         this.length = length;
         this.name = name;
+        defaultValue = initializeDefaultValue(0);
     }
 
     /**
@@ -35,6 +75,14 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
     @Override
     public Integer getLength() {
         return length;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
     /**
@@ -61,9 +109,6 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
         return StatementType.INTEGER_STATEMENT;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,14 +116,12 @@ public class IntegerDeclarationCobolStatement implements RegularDataDeclarationC
         IntegerDeclarationCobolStatement that = (IntegerDeclarationCobolStatement) o;
         return level.equals(that.level) &&
                 length.equals(that.length) &&
-                name.equals(that.name);
+                name.equals(that.name) &&
+                defaultValue.equals(that.defaultValue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
-        return Objects.hash(level, length, name);
+        return Objects.hash(level, length, name, defaultValue);
     }
 }
