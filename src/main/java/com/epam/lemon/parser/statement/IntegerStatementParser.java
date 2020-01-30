@@ -47,11 +47,34 @@ public class IntegerStatementParser extends AbstractStatementParser {
      * {@inheritDoc}
      */
     @Override
+    protected String[] getDefaultValueStatementAttributeFormats() {
+        String[] defaultValuePattern = new String[2];
+        defaultValuePattern[0] = "VALUE";
+        defaultValuePattern[1] = "[0-9]";
+        return defaultValuePattern;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new IntegerDeclarationCobolStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[LENGTH_DECLARATION].length(),
-                statementAttributes[NAME]
-        );
+        return statementAttributes -> {
+            if (statementAttributes.length == getNecessaryStatementAttributeFormats().length) {
+                return new IntegerDeclarationCobolStatement(
+                        Integer.parseInt(statementAttributes[LEVEL]),
+                        statementAttributes[LENGTH_DECLARATION].length(),
+                        statementAttributes[NAME]
+                );
+            }
+            else {
+                return new IntegerDeclarationCobolStatement(
+                        Integer.parseInt(statementAttributes[LEVEL]),
+                        statementAttributes[LENGTH_DECLARATION].length(),
+                        statementAttributes[NAME],
+                        Integer.parseInt(statementAttributes[5])
+                );
+            }
+        };
     }
 }

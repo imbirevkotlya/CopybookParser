@@ -33,6 +33,14 @@ public class GroupStatementParser extends AbstractStatementParser {
      * {@inheritDoc}
      */
     @Override
+    protected String[] getDefaultValueStatementAttributeFormats() {
+        return new String[0];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
         return statementAttributes -> new GroupDataDeclarationCobolStatement(
                 Integer.parseInt(statementAttributes[LEVEL]),

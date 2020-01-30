@@ -47,11 +47,34 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
      * {@inheritDoc}
      */
     @Override
+    protected String[] getDefaultValueStatementAttributeFormats() {
+        String[] defaultValuePattern = new String[2];
+        defaultValuePattern[0] = "VALUE";
+        defaultValuePattern[1] = "'([^' ]*)'";
+        return defaultValuePattern;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new AlphanumericDeclarationCobolStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[3].length(),
-                statementAttributes[NAME]
-        );
+        return statementAttributes -> {
+            if (getNecessaryStatementAttributeFormats().length == statementAttributes.length) {
+                return new AlphanumericDeclarationCobolStatement(
+                        Integer.parseInt(statementAttributes[LEVEL]),
+                        statementAttributes[LENGTH_DECLARATION].length(),
+                        statementAttributes[NAME]
+                );
+            }
+            else {
+                return new AlphanumericDeclarationCobolStatement(
+                        Integer.parseInt(statementAttributes[LEVEL]),
+                        statementAttributes[LENGTH_DECLARATION].length(),
+                        statementAttributes[NAME],
+                        statementAttributes[5].replaceAll("'", "")
+                );
+            }
+        };
     }
 }

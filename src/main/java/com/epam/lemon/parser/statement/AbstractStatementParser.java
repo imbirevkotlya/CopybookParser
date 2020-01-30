@@ -4,6 +4,7 @@ import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 /**
@@ -34,22 +35,18 @@ public abstract class AbstractStatementParser implements StatementParser {
 
     private boolean matchesStatement(String[] statementAttributes) {
         String[] necessaryStatementAttributeFormats = getNecessaryStatementAttributeFormats();
+        String[] optionalStatementAttributeFormats = getDefaultValueStatementAttributeFormats();
+        int allStatementAttributeFormatsLength = optionalStatementAttributeFormats.length + necessaryStatementAttributeFormats.length;
+        String[] allStatementAttributeFormats = Arrays.copyOf(necessaryStatementAttributeFormats, allStatementAttributeFormatsLength);
+        System.arraycopy(optionalStatementAttributeFormats, 0, allStatementAttributeFormats, necessaryStatementAttributeFormats.length, optionalStatementAttributeFormats.length);
         if (necessaryStatementAttributeFormats.length != statementAttributes.length) {
-            return false;
-        }
-        return checkAttributes(statementAttributes, necessaryStatementAttributeFormats);
-    }
-
-    private boolean checkAttributes(String[] statementAttributes, String[] necessaryStatementAttributeFormats) {
-        for (int i = 0; i < statementAttributes.length; i++) {
-            String statementAttribute = statementAttributes[i];
-            statementAttribute = statementAttribute.trim();
-            String necessaryStatementAttributeFormat = necessaryStatementAttributeFormats[i];
-            if (!statementAttribute.matches(necessaryStatementAttributeFormat)) {
+            if (statementAttributes.length != allStatementAttributeFormatsLength) {
                 return false;
+            } else {
+                return checkAttributes(statementAttributes, allStatementAttributeFormats);
             }
         }
-        return true;
+        return checkAttributes(statementAttributes, necessaryStatementAttributeFormats);
     }
 
     /**
@@ -83,6 +80,43 @@ public abstract class AbstractStatementParser implements StatementParser {
     protected abstract String[] getNecessaryStatementAttributeFormats();
 
     /**
+     * The method to return the default value pattern into the main parsing mechanism.
+     * The order is important.
+     *
+     * Example of using:
+     *
+     * Imagine, you have such COBOL statement:
+     *
+     * 01 NAME PIC XX VALUE '12'.
+     *
+     * Here you have 2 default value attributes:
+     * VALUE keyword
+     * default value parameter
+     *
+     * The method implementation can be something like:
+     *
+     *  String[] defaultValuePattern = new String[2];
+     *  defaultValuePattern[0] = "VALUE";
+     *  defaultValuePattern[1] = "'([^' ]*)'";
+     *  return defaultValuePattern;
+     *
+     * @return the regex expressions for the default value statement parts (divided by the space and trimmed)
+     */
+    protected abstract String[] getDefaultValueStatementAttributeFormats();
+
+    private boolean checkAttributes(String[] statementAttributes, String[] statementAttributeFormats) {
+        for (int i = 0; i < statementAttributes.length; i++) {
+            String statementAttribute = statementAttributes[i];
+            statementAttribute = statementAttribute.trim();
+            String statementAttributeFormat = statementAttributeFormats[i];
+            if (!statementAttribute.matches(statementAttributeFormat)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -90,6 +124,18 @@ public abstract class AbstractStatementParser implements StatementParser {
         DataDeclarationCobolStatement childStatement = parseStatement(statement);
         parentStatement.addChildrenStatement(childStatement);
         return parentStatement;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataDeclarationCobolStatement parseStatement(String statement) throws InvalidStatementFormatException {
+        String[] statementAttributes = statement.split(SPACE);
+        if (matchesStatement(statementAttributes)) {
+            return getBuildStatementFunction().apply(statementAttributes);
+        }
+        throw new InvalidStatementFormatException(statement);
     }
 
     /**
@@ -110,16 +156,4 @@ public abstract class AbstractStatementParser implements StatementParser {
      * @return the function from the statement declared attributes to the built and ready to use statement
      */
     protected abstract Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DataDeclarationCobolStatement parseStatement(String statement) throws InvalidStatementFormatException {
-        String[] statementAttributes = statement.split(SPACE);
-        if (matchesStatement(statementAttributes)) {
-            return getBuildStatementFunction().apply(statementAttributes);
-        }
-        throw new InvalidStatementFormatException(statement);
-    }
 }
