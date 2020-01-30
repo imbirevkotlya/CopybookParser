@@ -30,6 +30,8 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
     private static final int VALUE_DECLARATION_KEYWORD = 2;
     private static final int LENGTH_DECLARATION = 3;
 
+    private static final String LENGTH_DECLARATION_PATTERN = "^[X]*$";
+
     /**
      * {@inheritDoc}
      */
@@ -39,7 +41,7 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
         alphanumericStatementAttributes[LEVEL] = LEVEL_PATTERN;
         alphanumericStatementAttributes[NAME] = NAME_PATTERN;
         alphanumericStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
-        alphanumericStatementAttributes[LENGTH_DECLARATION] = "^[X]*$";
+        alphanumericStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
         return alphanumericStatementAttributes;
     }
 
@@ -50,7 +52,7 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
         return statementAttributes -> new AlphanumericDeclarationCobolStatement(
                 Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[3].length(),
+                statementAttributes[LENGTH_DECLARATION].length(),
                 statementAttributes[NAME]
         );
     }

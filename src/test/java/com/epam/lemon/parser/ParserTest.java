@@ -2,6 +2,7 @@ package com.epam.lemon.parser;
 
 import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.copybook.CopybookStatementIterator;
+import com.epam.lemon.exception.InvalidDefaultValueException;
 import com.epam.lemon.exception.InvalidStatementFormatException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -85,6 +86,32 @@ public class ParserTest {
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidCompFieldDataFormatDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidCompFieldDataFormatDeclaration();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        new CopybookParser().parse(statementIterator);
+    }
+
+    @Test
+    public void parse_withDefaultValues() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithDefaultValues();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        Copybook copybook = new CopybookParser().parse(statementIterator);
+
+        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+    }
+
+    @Test(expected = InvalidDefaultValueException.class)
+    public void parse_invalidDefaultValueLengthDeclaration() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidDefaultValueLength();
+        CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
+
+        new CopybookParser().parse(statementIterator);
+    }
+
+    @Test(expected = InvalidStatementFormatException.class)
+    public void parse_invalidDefaultValueFormatDeclaration() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidDefaultValueFormat();
         CopybookStatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
         new CopybookParser().parse(statementIterator);

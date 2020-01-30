@@ -4,18 +4,19 @@ import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.statement.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class TestCopybookFactory {
 
     static TestCopybookCharacteristics buildCopybookWithAlphanumericDefinition() {
-        ArrayList<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         cobolStatements.add(new AlphanumericDeclarationCobolStatement(5, 2, "EMP-SURNAME"));
         cobolStatements.add(new AlphanumericDeclarationCobolStatement(5, 1, "EMP-POSITION"));
         return new TestCopybookCharacteristics("src/test/resources/ALPHA.cpy", new Copybook(cobolStatements));
     }
 
     static TestCopybookCharacteristics buildCopybookWithNumericDefinition() {
-        ArrayList<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         cobolStatements.add(new IntegerDeclarationCobolStatement(5, 2, "EMP-SURNAME"));
         cobolStatements.add(new IntegerDeclarationCobolStatement(5, 1, "EMP-POSITION"));
         return new TestCopybookCharacteristics("src/test/resources/NUM.cpy", new Copybook(cobolStatements));
@@ -30,7 +31,7 @@ class TestCopybookFactory {
     }
 
     static TestCopybookCharacteristics buildCopybookWithGroupFieldDefinition() {
-        ArrayList<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         GroupDataDeclarationCobolStatement parent = new GroupDataDeclarationCobolStatement(1, "EMP-RECORD");
         parent.addChildrenStatement(new IntegerDeclarationCobolStatement(5, 2, "EMP-NAME"));
         cobolStatements.add(parent);
@@ -42,7 +43,7 @@ class TestCopybookFactory {
     }
 
     static TestCopybookCharacteristics buildCopybookWithCompFields() {
-        ArrayList<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         cobolStatements.add(new CompDataDeclarationStatement(6, 2, "EMP-SALARY"));
         return new TestCopybookCharacteristics("src/test/resources/COMP.cpy", new Copybook(cobolStatements));
     }
@@ -53,5 +54,21 @@ class TestCopybookFactory {
 
     static TestCopybookCharacteristics buildCopybookWithInvalidCompFieldDataFormatDeclaration() {
         return new TestCopybookCharacteristics("src/test/resources/COMPINVFMT.cpy");
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithDefaultValues() {
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        cobolStatements.add(new AlphanumericDeclarationCobolStatement(5, 2, "EMP-SURNAME", "AA"));
+        cobolStatements.add(new CompDataDeclarationStatement(5, 2, "EMP-SALARY", 1));
+        cobolStatements.add(new IntegerDeclarationCobolStatement(5, 1, "EMP-POSITION", 0));
+        return new TestCopybookCharacteristics("src/test/resources/DEFVALUE.cpy", new Copybook(cobolStatements));
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithInvalidDefaultValueLength() {
+        return new TestCopybookCharacteristics("src/test/resources/DEFVALUEINV.cpy");
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithInvalidDefaultValueFormat() {
+        return new TestCopybookCharacteristics("src/test/resources/DEFVALUEINVFMT.cpy");
     }
 }

@@ -22,6 +22,9 @@ public class CompStatementParser extends AbstractStatementParser {
     private static final int LENGTH_DECLARATION = 3;
     private static final int COMPUTATION_DECLARATION = 4;
 
+    private static final String COMP_KEYWORD_PATTERN = "COMP";
+    private static final String LENGTH_DECLARATION_PATTERN = "^[9]*$";
+
     /**
      * {@inheritDoc}
      */
@@ -31,8 +34,8 @@ public class CompStatementParser extends AbstractStatementParser {
         compStatementAttributes[LEVEL] = LEVEL_PATTERN;
         compStatementAttributes[NAME] = NAME_PATTERN;
         compStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
-        compStatementAttributes[LENGTH_DECLARATION] = "^[9]*$";
-        compStatementAttributes[COMPUTATION_DECLARATION] = "COMP";
+        compStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
+        compStatementAttributes[COMPUTATION_DECLARATION] = COMP_KEYWORD_PATTERN;
         return compStatementAttributes;
     }
 
