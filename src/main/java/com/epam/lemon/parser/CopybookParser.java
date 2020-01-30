@@ -36,6 +36,9 @@ public class CopybookParser {
         statementParsers.add(new AlphanumericStatementParser());
         statementParsers.add(new GroupStatementParser());
         statementParsers.add(new CompStatementParser());
+        statementParsers.add(new AlphanumericDefaultValueStatementParser());
+        statementParsers.add(new IntegerDefaultValueStatementParser());
+        statementParsers.add(new CompDefaultValueStatementParser());
     }
 
     /**

@@ -30,6 +30,8 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
     private static final int VALUE_DECLARATION_KEYWORD = 2;
     private static final int LENGTH_DECLARATION = 3;
 
+    private static final String LENGTH_DECLARATION_PATTERN = "^[X]*$";
+
     /**
      * {@inheritDoc}
      */
@@ -39,7 +41,7 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
         alphanumericStatementAttributes[LEVEL] = LEVEL_PATTERN;
         alphanumericStatementAttributes[NAME] = NAME_PATTERN;
         alphanumericStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
-        alphanumericStatementAttributes[LENGTH_DECLARATION] = "^[X]*$";
+        alphanumericStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
         return alphanumericStatementAttributes;
     }
 
@@ -47,34 +49,11 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
      * {@inheritDoc}
      */
     @Override
-    protected String[] getDefaultValueStatementAttributeFormats() {
-        String[] defaultValuePattern = new String[2];
-        defaultValuePattern[0] = "VALUE";
-        defaultValuePattern[1] = "'([^' ]*)'";
-        return defaultValuePattern;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> {
-            if (getNecessaryStatementAttributeFormats().length == statementAttributes.length) {
-                return new AlphanumericDeclarationCobolStatement(
-                        Integer.parseInt(statementAttributes[LEVEL]),
-                        statementAttributes[LENGTH_DECLARATION].length(),
-                        statementAttributes[NAME]
-                );
-            }
-            else {
-                return new AlphanumericDeclarationCobolStatement(
-                        Integer.parseInt(statementAttributes[LEVEL]),
-                        statementAttributes[LENGTH_DECLARATION].length(),
-                        statementAttributes[NAME],
-                        statementAttributes[5].replaceAll("'", "")
-                );
-            }
-        };
+        return statementAttributes -> new AlphanumericDeclarationCobolStatement(
+                Integer.parseInt(statementAttributes[LEVEL]),
+                statementAttributes[LENGTH_DECLARATION].length(),
+                statementAttributes[NAME]
+        );
     }
 }

@@ -30,6 +30,8 @@ public class IntegerStatementParser extends AbstractStatementParser {
     private static final int VALUE_DECLARATION_KEYWORD = 2;
     private static final int LENGTH_DECLARATION = 3;
 
+    private static final String LENGTH_DECLARATION_PATTERN = "^[9]*$";
+
     /**
      * {@inheritDoc}
      */
@@ -39,7 +41,7 @@ public class IntegerStatementParser extends AbstractStatementParser {
         integerStatementAttributes[LEVEL] = LEVEL_PATTERN;
         integerStatementAttributes[NAME] = NAME_PATTERN;
         integerStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
-        integerStatementAttributes[LENGTH_DECLARATION] = "^[9]*$";
+        integerStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
         return integerStatementAttributes;
     }
 
@@ -47,34 +49,11 @@ public class IntegerStatementParser extends AbstractStatementParser {
      * {@inheritDoc}
      */
     @Override
-    protected String[] getDefaultValueStatementAttributeFormats() {
-        String[] defaultValuePattern = new String[2];
-        defaultValuePattern[0] = "VALUE";
-        defaultValuePattern[1] = "[0-9]";
-        return defaultValuePattern;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> {
-            if (statementAttributes.length == getNecessaryStatementAttributeFormats().length) {
-                return new IntegerDeclarationCobolStatement(
-                        Integer.parseInt(statementAttributes[LEVEL]),
-                        statementAttributes[LENGTH_DECLARATION].length(),
-                        statementAttributes[NAME]
-                );
-            }
-            else {
-                return new IntegerDeclarationCobolStatement(
-                        Integer.parseInt(statementAttributes[LEVEL]),
-                        statementAttributes[LENGTH_DECLARATION].length(),
-                        statementAttributes[NAME],
-                        Integer.parseInt(statementAttributes[5])
-                );
-            }
-        };
+        return statementAttributes -> new IntegerDeclarationCobolStatement(
+                Integer.parseInt(statementAttributes[LEVEL]),
+                statementAttributes[LENGTH_DECLARATION].length(),
+                statementAttributes[NAME]
+        );
     }
 }
