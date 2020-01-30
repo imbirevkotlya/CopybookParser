@@ -5,6 +5,10 @@ import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
+/**
+ * Class represents the parsing mechanism for the alphanumeric default statements (simple wrapper under the usual
+ * alphanumeric parser).
+ */
 public class AlphanumericDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
@@ -23,10 +27,17 @@ public class AlphanumericDefaultValueStatementParser extends AbstractStatementPa
 
     private final AlphanumericStatementParser alphanumericStatementParser;
 
+    /**
+     * Main wrapper constructor with DI for main alphanumeric parser.
+     * @param alphanumericStatementParser is a main implementation of alphanumeric parser
+     */
     public AlphanumericDefaultValueStatementParser(AlphanumericStatementParser alphanumericStatementParser) {
         this.alphanumericStatementParser = alphanumericStatementParser;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
         String[] necessaryStatementAttributeFormats = alphanumericStatementParser.getNecessaryStatementAttributeFormats();
@@ -42,6 +53,9 @@ public class AlphanumericDefaultValueStatementParser extends AbstractStatementPa
         return defaultValueStatementAttributeFormats;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
         return statementAttributes -> new AlphanumericDeclarationCobolStatement(

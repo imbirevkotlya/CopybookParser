@@ -5,6 +5,10 @@ import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
+/**
+ * Class represents the parsing mechanism for the comp default statements (simple wrapper under the usual
+ * comp parser).
+ */
 public class CompDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
@@ -20,10 +24,17 @@ public class CompDefaultValueStatementParser extends AbstractStatementParser {
 
     private final CompStatementParser compStatementParser;
 
+    /**
+     * Main wrapper constructor with DI for main comp parser.
+     * @param compStatementParser is a main implementation of comp parser
+     */
     public CompDefaultValueStatementParser(CompStatementParser compStatementParser) {
         this.compStatementParser = compStatementParser;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
         String[] necessaryStatementAttributeFormats = compStatementParser.getNecessaryStatementAttributeFormats();
@@ -39,6 +50,9 @@ public class CompDefaultValueStatementParser extends AbstractStatementParser {
         return defaultValueStatementAttributeFormats;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
         return statementAttributes -> new CompDataDeclarationStatement(

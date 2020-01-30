@@ -2,6 +2,9 @@ package com.epam.lemon.parser.statement;
 
 import java.util.Arrays;
 
+/**
+ * Utility class with simple array merging feature
+ */
 class ArrayMerger {
 
     private final String[] firstArray;
@@ -12,6 +15,10 @@ class ArrayMerger {
         this.secondArray = secondArray;
     }
 
+    /**
+     * Main utility method to merge two arrays into one
+     * @return the new array with new length
+     */
     String[] merge() {
         int allStatementAttributeFormatsLength = secondArray.length + firstArray.length;
         String[] allStatementAttributeFormats = Arrays.copyOf(firstArray, allStatementAttributeFormatsLength);

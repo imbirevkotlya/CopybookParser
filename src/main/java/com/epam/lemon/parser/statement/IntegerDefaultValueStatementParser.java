@@ -5,6 +5,10 @@ import com.epam.lemon.statement.IntegerDeclarationCobolStatement;
 
 import java.util.function.Function;
 
+/**
+ * Class represents the parsing mechanism for the integer default statements (simple wrapper under the usual
+ * integer parser).
+ */
 public class IntegerDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
@@ -20,10 +24,17 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
 
     private final IntegerStatementParser integerStatementParser;
 
+    /**
+     * Main wrapper constructor with DI for main integer parser.
+     * @param integerStatementParser is a main implementation of integer parser
+     */
     public IntegerDefaultValueStatementParser(IntegerStatementParser integerStatementParser) {
         this.integerStatementParser = integerStatementParser;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
         String[] necessaryStatementAttributeFormats = integerStatementParser.getNecessaryStatementAttributeFormats();
@@ -39,6 +50,9 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
         return defaultValueStatementAttributeFormats;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
         return statementAttributes -> new IntegerDeclarationCobolStatement(
