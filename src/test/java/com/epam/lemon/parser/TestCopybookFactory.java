@@ -68,7 +68,7 @@ class TestCopybookFactory {
 
     static TestCopybookCharacteristics buildCopybookWithComp2Value() {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
-        cobolStatements.add(new CompDataDeclarationStatement(10, 2, "EMP-SALARY"));
+        cobolStatements.add(new CompDataDeclarationStatement(10, 2, "EMP-SALARY", 98));
         return new TestCopybookCharacteristics("src/test/resources/COMP-2.cpy", new Copybook(cobolStatements));
     }
 
@@ -82,7 +82,7 @@ class TestCopybookFactory {
 
     static TestCopybookCharacteristics buildCopybookWithComp3Value() {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
-        cobolStatements.add(new CompDataDeclarationStatement(10, 2, "EMP-SALARY"));
+        cobolStatements.add(new CompDataDeclarationStatement(10, 2, "EMP-SALARY", 8));
         return new TestCopybookCharacteristics("src/test/resources/COMP-3.cpy", new Copybook(cobolStatements));
     }
 

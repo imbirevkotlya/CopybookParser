@@ -31,20 +31,26 @@ public class CopybookParser {
      * Main parser constructor to initialize the statement parsers, which it will use.
      */
     public CopybookParser() {
-        CompStatementParser compStatementParser = new CompStatementParser();
         IntegerStatementParser integerStatementParser = new IntegerStatementParser();
         AlphanumericStatementParser alphanumericStatementParser = new AlphanumericStatementParser();
+        CompStatementParser compStatementParser = new CompStatementParser();
+        Comp1StatementParser comp1StatementParser = new Comp1StatementParser();
+        Comp2StatementParser comp2StatementParser = new Comp2StatementParser();
+        Comp3StatementParser comp3StatementParser = new Comp3StatementParser();
         statementParsers = new ArrayList<>();
+        statementParsers.add(new GroupStatementParser());
         statementParsers.add(integerStatementParser);
         statementParsers.add(alphanumericStatementParser);
         statementParsers.add(compStatementParser);
-        statementParsers.add(new GroupStatementParser());
+        statementParsers.add(comp1StatementParser);
+        statementParsers.add(comp2StatementParser);
+        statementParsers.add(comp3StatementParser);
         statementParsers.add(new AlphanumericDefaultValueStatementParser(alphanumericStatementParser));
         statementParsers.add(new IntegerDefaultValueStatementParser(integerStatementParser));
         statementParsers.add(new CompDefaultValueStatementParser(compStatementParser));
-        statementParsers.add(new Comp1StatementParser());
-        statementParsers.add(new Comp2StatementParser());
-        statementParsers.add(new Comp3StatementParser());
+        statementParsers.add(new Comp1DefaultValueStatementParser(comp1StatementParser));
+        statementParsers.add(new Comp2DefaultValueStatementParser(comp2StatementParser));
+        statementParsers.add(new Comp3DefaultValueStatementParser(comp3StatementParser));
     }
 
     /**
