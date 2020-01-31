@@ -4,7 +4,7 @@ import com.epam.lemon.exception.InvalidDefaultValueException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AlphanumericDeclarationCobolStatementTest {
+public class AlphanumericDefaultValueTest {
 
     private static final String FIELD_NAME = "NAME";
     private static final int FIELD_LENGTH = 5;
