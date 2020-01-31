@@ -56,6 +56,40 @@ class TestCopybookFactory {
         return new TestCopybookCharacteristics("src/test/resources/COMPINVFMT.cpy");
     }
 
+    static TestCopybookCharacteristics buildCopybookWithComp1Value() {
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        cobolStatements.add(new CompDataDeclarationStatement(10, 2, "EMP-SALARY"));
+        return new TestCopybookCharacteristics("src/test/resources/COMP-1.cpy", new Copybook(cobolStatements));
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithInvalidComp1Value() {
+        return new TestCopybookCharacteristics("src/test/resources/COMP-1INV.cpy");
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithComp2Value() {
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        cobolStatements.add(new CompDataDeclarationStatement(10, 2, "EMP-SALARY"));
+        return new TestCopybookCharacteristics("src/test/resources/COMP-2.cpy", new Copybook(cobolStatements));
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithInvalidComp2Value() {
+        return new TestCopybookCharacteristics("src/test/resources/COMP-2INV.cpy");
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithInvalidComp2ValueFormat() {
+        return new TestCopybookCharacteristics("src/test/resources/COMP-2INVFMT.cpy");
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithComp3Value() {
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        cobolStatements.add(new CompDataDeclarationStatement(10, 2, "EMP-SALARY"));
+        return new TestCopybookCharacteristics("src/test/resources/COMP-3.cpy", new Copybook(cobolStatements));
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithInvalidComp3Value() {
+        return new TestCopybookCharacteristics("src/test/resources/COMP-3INV.cpy");
+    }
+
     static TestCopybookCharacteristics buildCopybookWithDefaultValues() {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         cobolStatements.add(new AlphanumericDeclarationCobolStatement(5, 2, "EMP-SURNAME", "AA"));

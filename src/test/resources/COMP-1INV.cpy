@@ -1,0 +1,1 @@
+           10 EMP-SALARY PIC 99 COMP1.
