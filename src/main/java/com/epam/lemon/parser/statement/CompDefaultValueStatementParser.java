@@ -22,13 +22,13 @@ public class CompDefaultValueStatementParser extends AbstractStatementParser {
     private static final int DEFAULT_VALUE_KEYWORD = 0;
     private static final int DEFAULT_VALUE = 1;
 
-    private final CompStatementParser compStatementParser;
+    private final ComputationalStatementParser compStatementParser;
 
     /**
      * Main wrapper constructor with DI for main comp parser.
      * @param compStatementParser is a main implementation of comp parser
      */
-    public CompDefaultValueStatementParser(CompStatementParser compStatementParser) {
+    public CompDefaultValueStatementParser(ComputationalStatementParser compStatementParser) {
         this.compStatementParser = compStatementParser;
     }
 
