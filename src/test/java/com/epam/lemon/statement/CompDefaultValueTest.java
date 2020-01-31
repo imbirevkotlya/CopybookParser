@@ -1,10 +1,12 @@
 package com.epam.lemon.statement;
 
 import com.epam.lemon.exception.InvalidDefaultValueException;
+import com.epam.lemon.statement.numeric.computational.CompDataDeclarationStatement;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AlphanumericDeclarationCobolStatementTest {
+
+public class CompDefaultValueTest {
 
     private static final String FIELD_NAME = "NAME";
     private static final int FIELD_LENGTH = 5;
@@ -13,41 +15,40 @@ public class AlphanumericDeclarationCobolStatementTest {
     @Test
     public void initializeStatementWithEmptyDefaultValue() {
         RegularDataDeclarationCobolStatement statement =
-                new AlphanumericDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME);
+                new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME);
 
         String defaultValue = statement.getDefaultValue();
 
-        String emptyAlphanumericDefaultValue = "     ";
-        Assert.assertEquals(emptyAlphanumericDefaultValue, defaultValue);
+        String emptyDefaultValue = "00000";
+        Assert.assertEquals(emptyDefaultValue, defaultValue);
     }
 
     @Test
     public void initializeStatementWithDefaultValue() {
-        String expectedDefaultValue = "AAAAA";
+        Integer expectedDefaultValue = 12345;
         RegularDataDeclarationCobolStatement statement =
-                new AlphanumericDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, expectedDefaultValue);
+                new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, expectedDefaultValue);
 
         String defaultValue = statement.getDefaultValue();
 
-        Assert.assertEquals(expectedDefaultValue, defaultValue);
+        Assert.assertEquals(expectedDefaultValue.toString(), defaultValue);
     }
 
     @Test
     public void initializeStatementWithSmallDefaultValue() {
-        String trailingSpaces = "   ";
-        String smallDefaultValue = "AA";
+        Integer smallDefaultValue = 123;
         RegularDataDeclarationCobolStatement statement =
-                new AlphanumericDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, smallDefaultValue);
+                new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, smallDefaultValue);
 
         String defaultValue = statement.getDefaultValue();
 
-        Assert.assertEquals(trailingSpaces + smallDefaultValue, defaultValue);
+        String trailingZeroes = "00";
+        Assert.assertEquals(trailingZeroes + smallDefaultValue.toString(), defaultValue);
     }
 
     @Test(expected = InvalidDefaultValueException.class)
     public void initializeStatementWithTooBigDefaultValue() {
-        String tooBigDefaultValue = "AAAAAAAAAAA";
-
-        new AlphanumericDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, tooBigDefaultValue);
+        Integer expectedDefaultValue = 123456;
+        new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, expectedDefaultValue);
     }
 }

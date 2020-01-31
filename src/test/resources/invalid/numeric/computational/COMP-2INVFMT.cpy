@@ -1,0 +1,1 @@
+           10 EMP-SALARY PIC AA COMP-2.

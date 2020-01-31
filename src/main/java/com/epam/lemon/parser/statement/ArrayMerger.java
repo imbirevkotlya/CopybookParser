@@ -5,12 +5,12 @@ import java.util.Arrays;
 /**
  * Utility class with simple array merging feature
  */
-class ArrayMerger {
+public class ArrayMerger {
 
     private final String[] firstArray;
     private final String[] secondArray;
 
-    ArrayMerger(String[] firstArray, String[] secondArray) {
+    public ArrayMerger(String[] firstArray, String[] secondArray) {
         this.firstArray = firstArray;
         this.secondArray = secondArray;
     }
@@ -19,7 +19,7 @@ class ArrayMerger {
      * Main utility method to merge two arrays into one
      * @return the new array with new length
      */
-    String[] merge() {
+    public String[] merge() {
         int fullLength = secondArray.length + firstArray.length;
         String[] fullArray = Arrays.copyOf(firstArray, fullLength);
         int initialPosition = 0;

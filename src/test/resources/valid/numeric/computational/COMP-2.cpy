@@ -1,0 +1,1 @@
+           10 EMP-SALARY PIC 99 COMP-2 VALUE 98.

@@ -1,11 +1,11 @@
 package com.epam.lemon.statement;
 
 import com.epam.lemon.exception.InvalidDefaultValueException;
+import com.epam.lemon.statement.numeric.IntegerDeclarationCobolStatement;
 import org.junit.Assert;
 import org.junit.Test;
 
-
-public class CompDataDeclarationStatementTest {
+public class IntegerDefaultValueTest {
 
     private static final String FIELD_NAME = "NAME";
     private static final int FIELD_LENGTH = 5;
@@ -14,7 +14,7 @@ public class CompDataDeclarationStatementTest {
     @Test
     public void initializeStatementWithEmptyDefaultValue() {
         RegularDataDeclarationCobolStatement statement =
-                new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME);
+                new IntegerDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME);
 
         String defaultValue = statement.getDefaultValue();
 
@@ -26,7 +26,7 @@ public class CompDataDeclarationStatementTest {
     public void initializeStatementWithDefaultValue() {
         Integer expectedDefaultValue = 12345;
         RegularDataDeclarationCobolStatement statement =
-                new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, expectedDefaultValue);
+                new IntegerDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, expectedDefaultValue);
 
         String defaultValue = statement.getDefaultValue();
 
@@ -37,7 +37,7 @@ public class CompDataDeclarationStatementTest {
     public void initializeStatementWithSmallDefaultValue() {
         Integer smallDefaultValue = 123;
         RegularDataDeclarationCobolStatement statement =
-                new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, smallDefaultValue);
+                new IntegerDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, smallDefaultValue);
 
         String defaultValue = statement.getDefaultValue();
 
@@ -48,6 +48,6 @@ public class CompDataDeclarationStatementTest {
     @Test(expected = InvalidDefaultValueException.class)
     public void initializeStatementWithTooBigDefaultValue() {
         Integer expectedDefaultValue = 123456;
-        new CompDataDeclarationStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, expectedDefaultValue);
+        new IntegerDeclarationCobolStatement(FIELD_LEVEL, FIELD_LENGTH, FIELD_NAME, expectedDefaultValue);
     }
 }

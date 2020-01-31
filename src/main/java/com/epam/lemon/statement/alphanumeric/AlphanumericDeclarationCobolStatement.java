@@ -1,6 +1,8 @@
-package com.epam.lemon.statement;
+package com.epam.lemon.statement.alphanumeric;
 
 import com.epam.lemon.exception.InvalidDefaultValueException;
+import com.epam.lemon.statement.RegularDataDeclarationCobolStatement;
+import com.epam.lemon.statement.StatementType;
 
 import java.util.Objects;
 
