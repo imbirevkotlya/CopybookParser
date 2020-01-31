@@ -15,7 +15,7 @@ public abstract class AbstractStatementParser implements StatementParser {
      * Supported level numbers:
      * 01 - 49
      */
-    static final String LEVEL_PATTERN = "[0-4][1-9]";
+    static final String LEVEL_PATTERN = "[0-4][0-9]";
     /**
      * Supported names:
      * all, except the '.'
