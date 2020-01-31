@@ -1,15 +1,17 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.alphanumeric;
 
+import com.epam.lemon.parser.statement.AbstractStatementParser;
+import com.epam.lemon.parser.statement.ArrayMerger;
+import com.epam.lemon.statement.alphanumeric.AlphanumericDeclarationCobolStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.statement.IntegerDeclarationCobolStatement;
 
 import java.util.function.Function;
 
 /**
- * Class represents the parsing mechanism for the integer default statements (simple wrapper under the usual
- * integer parser).
+ * Class represents the parsing mechanism for the alphanumeric default statements (simple wrapper under the usual
+ * alphanumeric parser).
  */
-public class IntegerDefaultValueStatementParser extends AbstractStatementParser {
+public class AlphanumericDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
     private static final int NAME = 1;
@@ -17,19 +19,22 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
     private static final int DEFAULT_VALUE_DECLARATION = 5;
 
     private static final String DEFAULT_VALUE_KEYWORD_PATTERN = "VALUE";
-    private static final String DEFAULT_VALUE_PATTERN = "[0-9]";
+    private static final String DEFAULT_VALUE_PATTERN = "'([^' ]*)'";
 
     private static final int DEFAULT_VALUE_KEYWORD = 0;
     private static final int DEFAULT_VALUE = 1;
 
-    private final IntegerStatementParser integerStatementParser;
+    private static final String EMPTY_STRING = "";
+    private static final String SINGLE_QUOTE = "'";
+
+    private final AlphanumericStatementParser alphanumericStatementParser;
 
     /**
-     * Main wrapper constructor with DI for main integer parser.
-     * @param integerStatementParser is a main implementation of integer parser
+     * Main wrapper constructor with DI for main alphanumeric parser.
+     * @param alphanumericStatementParser is a main implementation of alphanumeric parser
      */
-    public IntegerDefaultValueStatementParser(IntegerStatementParser integerStatementParser) {
-        this.integerStatementParser = integerStatementParser;
+    public AlphanumericDefaultValueStatementParser(AlphanumericStatementParser alphanumericStatementParser) {
+        this.alphanumericStatementParser = alphanumericStatementParser;
     }
 
     /**
@@ -37,7 +42,7 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
      */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
-        String[] necessaryStatementAttributeFormats = integerStatementParser.getNecessaryStatementAttributeFormats();
+        String[] necessaryStatementAttributeFormats = alphanumericStatementParser.getNecessaryStatementAttributeFormats();
         String[] defaultValueStatementAttributeFormats = getDefaultStatementAttributeFormats();
         ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats, defaultValueStatementAttributeFormats);
         return arrayMerger.merge();
@@ -55,11 +60,11 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
      */
     @Override
     protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new IntegerDeclarationCobolStatement(
+        return statementAttributes -> new AlphanumericDeclarationCobolStatement(
                 Integer.parseInt(statementAttributes[LEVEL]),
                 statementAttributes[LENGTH_DECLARATION].length(),
                 statementAttributes[NAME],
-                Integer.parseInt(statementAttributes[DEFAULT_VALUE_DECLARATION])
+                statementAttributes[DEFAULT_VALUE_DECLARATION].replaceAll(SINGLE_QUOTE, EMPTY_STRING)
         );
     }
 }

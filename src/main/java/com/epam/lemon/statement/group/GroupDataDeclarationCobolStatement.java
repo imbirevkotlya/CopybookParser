@@ -1,4 +1,7 @@
-package com.epam.lemon.statement;
+package com.epam.lemon.statement.group;
+
+import com.epam.lemon.statement.DataDeclarationCobolStatement;
+import com.epam.lemon.statement.StatementType;
 
 import java.util.ArrayList;
 import java.util.List;

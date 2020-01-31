@@ -1,15 +1,24 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.numeric.computational;
 
-import com.epam.lemon.statement.CompDataDeclarationStatement;
+import com.epam.lemon.parser.statement.AbstractStatementParser;
+import com.epam.lemon.parser.statement.ArrayMerger;
+import com.epam.lemon.statement.numeric.computational.CompDataDeclarationStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
 /**
- * Class represents the parsing mechanism for the comp default statements (simple wrapper under the usual
- * comp parser).
+ * Class represents the abstract computational statement with default value parser. The extended class should
+ * override the constructor with the specified basic computational parser implementation.
+ * Example:
+ * public class Comp3DefaultValueStatementParser extends ComputationalDefaultValueStatementParser {
+ *     public Comp3DefaultValueStatementParser(Comp3StatementParser compStatementParser) {
+ *         super(compStatementParser);
+ *     }
+ * }
+ *
  */
-public class CompDefaultValueStatementParser extends AbstractStatementParser {
+public abstract class ComputationalDefaultValueStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
     private static final int NAME = 1;
@@ -17,18 +26,18 @@ public class CompDefaultValueStatementParser extends AbstractStatementParser {
     private static final int DEFAULT_VALUE_DECLARATION = 6;
 
     private static final String DEFAULT_VALUE_KEYWORD_PATTERN = "VALUE";
-    private static final String DEFAULT_VALUE_PATTERN = "[0-9]";
+    private static final String DEFAULT_VALUE_PATTERN = "[0-9]+";
 
     private static final int DEFAULT_VALUE_KEYWORD = 0;
     private static final int DEFAULT_VALUE = 1;
 
-    private final CompStatementParser compStatementParser;
+    private final ComputationalStatementParser compStatementParser;
 
     /**
      * Main wrapper constructor with DI for main comp parser.
      * @param compStatementParser is a main implementation of comp parser
      */
-    public CompDefaultValueStatementParser(CompStatementParser compStatementParser) {
+    public ComputationalDefaultValueStatementParser(ComputationalStatementParser compStatementParser) {
         this.compStatementParser = compStatementParser;
     }
 

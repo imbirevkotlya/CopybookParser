@@ -42,22 +42,22 @@ Prerequisites:
 
 ### Versioning
 
-- Now, the 1.2-SNAPSHOT version with DEFAULT values support
-- In development stage: 1.3-SNAPSHOT version with COMP-1,COMP-2,COMP-3 fields support
-- In plans: 1.4-SNAPSHOT version with fixed size arrays support
+- Now, the 1.3-SNAPSHOT version with COMP-1,COMP-2,COMP-3 fields support
+- In development stage: 1.4-SNAPSHOT version with fixed size arrays support
+- In plans: 1.5-SNAPSHOT version with dollars support
 - ...
 
 ### Acknowledges
 
 Supported copybook formats:
 
-- only integer numeric, alphanumeric, group, simple comp fields are supported
+- only integer numeric, alphanumeric, group, comp, default value fields are supported
 - only field declarations with XXX (not X(2)) are supported
 - no any other digits or symbols supported (even if they in comment zone)
-- no comps-1,comp-2,comp-3, arrays, redefines are supported
+- redefines are supported
 - no comments are supported
 - no nested groups or several groups are supported
-- the example of valid copybooks can be found in path: <project_root>/src/test/resource/
+- the example of valid copybooks can be found in path: <project_root>/src/test/resource/valid
 
 ### Licensing
 

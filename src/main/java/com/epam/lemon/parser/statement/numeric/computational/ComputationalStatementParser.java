@@ -1,20 +1,13 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.numeric.computational;
 
 import com.epam.lemon.parser.CopybookParser;
-import com.epam.lemon.statement.CompDataDeclarationStatement;
+import com.epam.lemon.parser.statement.AbstractStatementParser;
+import com.epam.lemon.statement.numeric.computational.CompDataDeclarationStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
-/**
- * COBOL computational statement contains 5 attributes: level,name, pic keyword, digit length declaration, comp keyword
- *
- * Example:
- *
- * 01 COMP-NAME PIC 99 COMP.
- *
- */
-public class CompStatementParser extends AbstractStatementParser {
+public abstract class ComputationalStatementParser extends AbstractStatementParser {
 
     private static final int LEVEL = 0;
     private static final int NAME = 1;
@@ -22,7 +15,6 @@ public class CompStatementParser extends AbstractStatementParser {
     private static final int LENGTH_DECLARATION = 3;
     private static final int COMPUTATION_DECLARATION = 4;
 
-    private static final String COMP_KEYWORD_PATTERN = "COMP";
     private static final String LENGTH_DECLARATION_PATTERN = "^[9]*$";
 
     /**
@@ -35,9 +27,16 @@ public class CompStatementParser extends AbstractStatementParser {
         compStatementAttributes[NAME] = NAME_PATTERN;
         compStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
         compStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
-        compStatementAttributes[COMPUTATION_DECLARATION] = COMP_KEYWORD_PATTERN;
+        compStatementAttributes[COMPUTATION_DECLARATION] = getComputationalKeywordPattern();
         return compStatementAttributes;
     }
+
+    /**
+     * Method to return the computational keyword pattern in the implementation.
+     * Examples: COMP, COMP-1, COMP-2 and etc.
+     * @return the computational keyword pattern
+     */
+    protected abstract String getComputationalKeywordPattern();
 
     /**
      * {@inheritDoc}

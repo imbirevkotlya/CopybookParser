@@ -2,4 +2,4 @@
            05 EMP-NAME PIC 99.
            05 EMP-SURNAME PIC XX.
            05 EMP-POSITION PIC X.
-           05 EMP-SALARY PIC 99 COMP-1.
+           05 EMP-SALARY PIC 99 COMP-99.
