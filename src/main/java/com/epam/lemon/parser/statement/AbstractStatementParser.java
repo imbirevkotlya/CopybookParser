@@ -2,7 +2,7 @@ package com.epam.lemon.parser.statement;
 
 import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
+import com.epam.lemon.statement.group.GroupDataDeclarationCobolStatement;
 
 import java.util.function.Function;
 
@@ -15,12 +15,12 @@ public abstract class AbstractStatementParser implements StatementParser {
      * Supported level numbers:
      * 01 - 49
      */
-    static final String LEVEL_PATTERN = "[0-4][0-9]";
+    protected static final String LEVEL_PATTERN = "[0-4][0-9]";
     /**
      * Supported names:
      * all, except the '.'
      */
-    static final String NAME_PATTERN = "^[^.]+$";
+    protected static final String NAME_PATTERN = "^[^.]+$";
 
     private static final String SPACE = " ";
 

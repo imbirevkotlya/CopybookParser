@@ -1,4 +1,6 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.numeric.computational.comp1;
+
+import com.epam.lemon.parser.statement.numeric.computational.ComputationalDefaultValueStatementParser;
 
 /**
  * Class represents the parsing mechanism for the comp-1 default statements (simple wrapper under the usual

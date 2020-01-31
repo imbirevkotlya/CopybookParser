@@ -2,7 +2,7 @@ package com.epam.lemon.parser.statement;
 
 import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.statement.GroupDataDeclarationCobolStatement;
+import com.epam.lemon.statement.group.GroupDataDeclarationCobolStatement;
 
 /**
  * The utility class to handle the statement constructions. Each language statement type should contain it's own

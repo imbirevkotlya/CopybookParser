@@ -1,6 +1,8 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.numeric.computational;
 
-import com.epam.lemon.statement.CompDataDeclarationStatement;
+import com.epam.lemon.parser.statement.AbstractStatementParser;
+import com.epam.lemon.parser.statement.ArrayMerger;
+import com.epam.lemon.statement.numeric.computational.CompDataDeclarationStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;

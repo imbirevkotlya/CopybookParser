@@ -1,6 +1,7 @@
 package com.epam.lemon.statement;
 
 import com.epam.lemon.exception.InvalidDefaultValueException;
+import com.epam.lemon.statement.alphanumeric.AlphanumericDeclarationCobolStatement;
 import org.junit.Assert;
 import org.junit.Test;
 

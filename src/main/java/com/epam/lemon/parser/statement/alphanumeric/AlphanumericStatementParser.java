@@ -1,7 +1,8 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.alphanumeric;
 
 import com.epam.lemon.parser.CopybookParser;
-import com.epam.lemon.statement.AlphanumericDeclarationCobolStatement;
+import com.epam.lemon.parser.statement.AbstractStatementParser;
+import com.epam.lemon.statement.alphanumeric.AlphanumericDeclarationCobolStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
 import java.util.function.Function;

@@ -1,4 +1,6 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.numeric.computational.comp2;
+
+import com.epam.lemon.parser.statement.numeric.computational.ComputationalStatementParser;
 
 /**
  * COBOL computational statement contains 5 attributes: level,name, pic keyword, digit length declaration, comp keyword
