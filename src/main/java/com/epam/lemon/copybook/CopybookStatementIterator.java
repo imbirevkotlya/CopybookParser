@@ -3,7 +3,6 @@ package com.epam.lemon.copybook;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -26,7 +25,7 @@ import java.util.NoSuchElementException;
  * }
  *
  */
-public class CopybookStatementIterator implements Iterator<String> {
+public class CopybookStatementIterator implements StatementIterator {
 
     private static final Charset ASCII = Charset.forName("windows-1251");
     /**
@@ -90,6 +89,25 @@ public class CopybookStatementIterator implements Iterator<String> {
     public String next() {
         if (hasNext()) {
             return statements.get(cursor++);
+        }
+        throw new NoSuchElementException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasPrevious() {
+        return cursor > 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String previous() {
+        if (hasPrevious()) {
+            return statements.get(cursor--);
         }
         throw new NoSuchElementException();
     }

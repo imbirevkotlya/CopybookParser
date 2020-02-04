@@ -1,7 +1,7 @@
 package com.epam.lemon.parser;
 
 import com.epam.lemon.copybook.Copybook;
-import com.epam.lemon.copybook.CopybookStatementIterator;
+import com.epam.lemon.copybook.StatementIterator;
 import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.parser.statement.StatementParser;
 import com.epam.lemon.parser.statement.StatementParserRegistry;
@@ -41,7 +41,7 @@ public class CopybookParser {
      * @return the completed copybook class with statements inside it
      * @throws InvalidStatementFormatException if copybook format is wrong or not supported
      */
-    public Copybook parse(CopybookStatementIterator copybookStatementIterator) throws InvalidStatementFormatException {
+    public Copybook parse(StatementIterator copybookStatementIterator) throws InvalidStatementFormatException {
         List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
         while (copybookStatementIterator.hasNext()) {
             String copybookStatement = copybookStatementIterator.next();
@@ -65,7 +65,7 @@ public class CopybookParser {
         throw new InvalidStatementFormatException(statement);
     }
 
-    private DataDeclarationCobolStatement parseGroupStatementWithChildren(CopybookStatementIterator statementIterator, String statement) {
+    private DataDeclarationCobolStatement parseGroupStatementWithChildren(StatementIterator statementIterator, String statement) {
         GroupDataDeclarationCobolStatement parentStatement = parseGroupStatement(statement);
         while (statementIterator.hasNext()) {
             String childrenStatement = statementIterator.next();
