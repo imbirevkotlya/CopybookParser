@@ -3,6 +3,7 @@ package com.epam.lemon.parser;
 import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.copybook.CopybookStatementIterator;
 
+import com.epam.lemon.copybook.StatementIterator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,7 +23,7 @@ class TestCopybookCharacteristics {
         this.expectedCopybook = null;
     }
 
-    CopybookStatementIterator createIteratorFromFile() throws IOException {
+    StatementIterator createIteratorFromFile() throws IOException {
         return new CopybookStatementIterator(Files.readAllBytes(Path.of(copybookPath)));
     }
 
