@@ -3,19 +3,8 @@ package com.epam.lemon.parser;
 import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.copybook.CopybookStatementIterator;
 import com.epam.lemon.exception.InvalidStatementFormatException;
-import com.epam.lemon.parser.statement.*;
-import com.epam.lemon.parser.statement.alphanumeric.AlphanumericDefaultValueStatementParser;
-import com.epam.lemon.parser.statement.alphanumeric.AlphanumericStatementParser;
-import com.epam.lemon.parser.statement.group.GroupStatementParser;
-import com.epam.lemon.parser.statement.numeric.*;
-import com.epam.lemon.parser.statement.numeric.computational.comp.CompDefaultValueStatementParser;
-import com.epam.lemon.parser.statement.numeric.computational.comp.CompStatementParser;
-import com.epam.lemon.parser.statement.numeric.computational.comp1.Comp1DefaultValueStatementParser;
-import com.epam.lemon.parser.statement.numeric.computational.comp1.Comp1StatementParser;
-import com.epam.lemon.parser.statement.numeric.computational.comp2.Comp2DefaultValueStatementParser;
-import com.epam.lemon.parser.statement.numeric.computational.comp2.Comp2StatementParser;
-import com.epam.lemon.parser.statement.numeric.computational.comp3.Comp3DefaultValueStatementParser;
-import com.epam.lemon.parser.statement.numeric.computational.comp3.Comp3StatementParser;
+import com.epam.lemon.parser.statement.StatementParser;
+import com.epam.lemon.parser.statement.StatementParserRegistry;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 import com.epam.lemon.statement.group.GroupDataDeclarationCobolStatement;
 
@@ -42,27 +31,8 @@ public class CopybookParser {
     /**
      * Main parser constructor to initialize the statement parsers, which it will use.
      */
-    public CopybookParser() {
-        IntegerStatementParser integerStatementParser = new IntegerStatementParser();
-        AlphanumericStatementParser alphanumericStatementParser = new AlphanumericStatementParser();
-        CompStatementParser compStatementParser = new CompStatementParser();
-        Comp1StatementParser comp1StatementParser = new Comp1StatementParser();
-        Comp2StatementParser comp2StatementParser = new Comp2StatementParser();
-        Comp3StatementParser comp3StatementParser = new Comp3StatementParser();
-        statementParsers = new ArrayList<>();
-        statementParsers.add(new GroupStatementParser());
-        statementParsers.add(integerStatementParser);
-        statementParsers.add(alphanumericStatementParser);
-        statementParsers.add(compStatementParser);
-        statementParsers.add(comp1StatementParser);
-        statementParsers.add(comp2StatementParser);
-        statementParsers.add(comp3StatementParser);
-        statementParsers.add(new AlphanumericDefaultValueStatementParser(alphanumericStatementParser));
-        statementParsers.add(new IntegerDefaultValueStatementParser(integerStatementParser));
-        statementParsers.add(new CompDefaultValueStatementParser(compStatementParser));
-        statementParsers.add(new Comp1DefaultValueStatementParser(comp1StatementParser));
-        statementParsers.add(new Comp2DefaultValueStatementParser(comp2StatementParser));
-        statementParsers.add(new Comp3DefaultValueStatementParser(comp3StatementParser));
+    public CopybookParser(StatementParserRegistry statementParserRegistry) {
+        statementParsers = statementParserRegistry.registerStatementParsers();
     }
 
     /**
