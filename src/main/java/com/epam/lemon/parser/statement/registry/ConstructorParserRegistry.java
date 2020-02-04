@@ -1,5 +1,7 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.registry;
 
+import com.epam.lemon.copybook.StatementIterator;
+import com.epam.lemon.parser.statement.StatementParser;
 import com.epam.lemon.parser.statement.alphanumeric.AlphanumericDefaultValueStatementParser;
 import com.epam.lemon.parser.statement.alphanumeric.AlphanumericStatementParser;
 import com.epam.lemon.parser.statement.group.GroupStatementParser;
@@ -23,19 +25,21 @@ public class ConstructorParserRegistry implements StatementParserRegistry {
 
   /**
    * {@inheritDoc}
+   * @param statementRegistry
+   * @param statementIterator
    */
   @Override
-  public List<StatementParser> registerStatementParsers() {
+  public List<StatementParser> registerStatementParsers(StatementParserRegistry statementRegistry, StatementIterator statementIterator) {
     List<StatementParser> statementParsers = new ArrayList<>();
-    statementParsers.addAll(registerGroupParsers());
+    statementParsers.addAll(registerGroupParsers(statementRegistry, statementIterator));
     statementParsers.addAll(registerAlphanumericParsers());
     statementParsers.addAll(registerNumericParsers());
     return statementParsers;
   }
 
-  private List<StatementParser> registerGroupParsers() {
+  private List<StatementParser> registerGroupParsers(StatementParserRegistry statementRegistry, StatementIterator statementIterator) {
     List<StatementParser> groupParsers = new ArrayList<>();
-    groupParsers.add(new GroupStatementParser());
+    groupParsers.add(new GroupStatementParser(statementIterator, statementRegistry));
     return groupParsers;
   }
 

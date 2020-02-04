@@ -1,4 +1,4 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.util;
 
 import java.util.Arrays;
 
