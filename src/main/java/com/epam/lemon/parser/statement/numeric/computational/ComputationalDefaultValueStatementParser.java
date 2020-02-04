@@ -1,11 +1,9 @@
 package com.epam.lemon.parser.statement.numeric.computational;
 
 import com.epam.lemon.parser.statement.AbstractStatementParser;
-import com.epam.lemon.parser.statement.ArrayMerger;
+import com.epam.lemon.parser.statement.util.ArrayMerger;
 import com.epam.lemon.statement.numeric.computational.CompDataDeclarationStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-
-import java.util.function.Function;
 
 /**
  * Class represents the abstract computational statement with default value parser. The extended class should
@@ -59,16 +57,14 @@ public abstract class ComputationalDefaultValueStatementParser extends AbstractS
         return defaultValueStatementAttributeFormats;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new CompDataDeclarationStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[LENGTH_DECLARATION].length(),
-                statementAttributes[NAME],
-                Integer.parseInt(statementAttributes[DEFAULT_VALUE_DECLARATION])
+    protected DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes) {
+        return new CompDataDeclarationStatement(
+            Integer.parseInt(statementAttributes[LEVEL]),
+            statementAttributes[LENGTH_DECLARATION].length(),
+            statementAttributes[NAME],
+            Integer.parseInt(statementAttributes[DEFAULT_VALUE_DECLARATION])
         );
     }
+
 }
