@@ -51,7 +51,9 @@ public class GroupStatementParser extends ParentFieldParser {
     protected DataDeclarationCobolStatement parseMatchedStatement(String[] groupStatementAttributes) {
         Integer groupLevel = parseLevel(groupStatementAttributes[LEVEL]);
         List<DataDeclarationCobolStatement> childrenStatements = parseChildrenStatements(groupLevel);
-        return new GroupDataDeclarationCobolStatement(groupLevel, groupStatementAttributes[NAME], childrenStatements);
+        return new GroupDataDeclarationCobolStatement(groupLevel,
+                                                      groupStatementAttributes[NAME],
+                                                      childrenStatements);
     }
 
     private Integer parseLevel(String statementAttribute) {
@@ -88,5 +90,4 @@ public class GroupStatementParser extends ParentFieldParser {
         }
         return childrenStatements;
     }
-
 }

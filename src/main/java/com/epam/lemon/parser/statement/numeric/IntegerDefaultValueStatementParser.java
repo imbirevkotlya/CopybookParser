@@ -37,10 +37,19 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
      */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
-        String[] necessaryStatementAttributeFormats = integerStatementParser.getNecessaryStatementAttributeFormats();
+        String[] necessaryStatementAttributeFormats = integerStatementParser
+                                                        .getNecessaryStatementAttributeFormats();
         String[] defaultValueStatementAttributeFormats = getDefaultStatementAttributeFormats();
-        ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats, defaultValueStatementAttributeFormats);
+        ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats,
+                                                  defaultValueStatementAttributeFormats);
         return arrayMerger.merge();
+    }
+
+    private String[] getDefaultStatementAttributeFormats() {
+        String[] defaultValueStatementAttributeFormats = new String[2];
+        defaultValueStatementAttributeFormats[DEFAULT_VALUE_KEYWORD] = DEFAULT_VALUE_KEYWORD_PATTERN;
+        defaultValueStatementAttributeFormats[DEFAULT_VALUE] = DEFAULT_VALUE_PATTERN;
+        return defaultValueStatementAttributeFormats;
     }
 
     @Override
@@ -52,12 +61,4 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
             Integer.parseInt(statementAttributes[DEFAULT_VALUE_DECLARATION])
         );
     }
-
-    private String[] getDefaultStatementAttributeFormats() {
-        String[] defaultValueStatementAttributeFormats = new String[2];
-        defaultValueStatementAttributeFormats[DEFAULT_VALUE_KEYWORD] = DEFAULT_VALUE_KEYWORD_PATTERN;
-        defaultValueStatementAttributeFormats[DEFAULT_VALUE] = DEFAULT_VALUE_PATTERN;
-        return defaultValueStatementAttributeFormats;
-    }
-
 }

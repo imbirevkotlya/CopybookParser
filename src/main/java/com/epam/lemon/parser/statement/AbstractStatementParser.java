@@ -77,12 +77,23 @@ public abstract class AbstractStatementParser implements StatementParser {
      */
     @Override
     public DataDeclarationCobolStatement parseStatement(String statement) {
-        String[] statementAttributes = statement.split(SPACE);
+        String[] statementAttributes = splitStatement(statement);
         if (matchesStatement(statementAttributes)) {
             return parseMatchedStatement(statementAttributes);
         }
         return null;
     }
 
+    private String[] splitStatement(String statement) {
+        return statement.split(SPACE);
+    }
+
+    /**
+     * Method declares the logic to parse statement (by it's attributes): level, name and so on.
+     * The statement attributes are defined in the method getNecessaryStatementAttributeFormats.
+     *
+     * @param statementAttributes is a statement attributes
+     * @return a fully parsed domain object from statementAttributes
+     */
     protected abstract DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes);
 }

@@ -14,11 +14,10 @@ public interface StatementParserRegistry {
   /**
    * The all ready to work statement parsers available now.
    * @return the list of statement parsers
-   * @param statementRegistry
-   * @param statementIterator
+   * @param statementRegistry is a user statement registry for the group statement parsers
+   * @param statementIterator is a user statement iterator for copybook statement source
    */
-  List<StatementParser> registerStatementParsers(
-      StatementParserRegistry statementRegistry,
-      StatementIterator statementIterator);
+  List<StatementParser> registerStatementParsers(StatementParserRegistry statementRegistry,
+                                                 StatementIterator statementIterator);
 
 }

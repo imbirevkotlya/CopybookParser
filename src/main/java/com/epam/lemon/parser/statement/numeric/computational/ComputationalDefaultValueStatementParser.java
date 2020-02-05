@@ -44,9 +44,11 @@ public abstract class ComputationalDefaultValueStatementParser extends AbstractS
      */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
-        String[] necessaryStatementAttributeFormats = compStatementParser.getNecessaryStatementAttributeFormats();
+        String[] necessaryStatementAttributeFormats = compStatementParser
+                                                      .getNecessaryStatementAttributeFormats();
         String[] defaultValueStatementAttributeFormats = getDefaultStatementAttributeFormats();
-        ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats, defaultValueStatementAttributeFormats);
+        ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats,
+                                                  defaultValueStatementAttributeFormats);
         return arrayMerger.merge();
     }
 

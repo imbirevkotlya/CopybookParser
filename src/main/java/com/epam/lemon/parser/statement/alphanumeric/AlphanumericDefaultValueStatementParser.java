@@ -46,6 +46,13 @@ public class AlphanumericDefaultValueStatementParser extends AbstractStatementPa
         return arrayMerger.merge();
     }
 
+    private String[] getDefaultStatementAttributeFormats() {
+        String[] defaultValueStatementAttributeFormats = new String[2];
+        defaultValueStatementAttributeFormats[DEFAULT_VALUE_KEYWORD] = DEFAULT_VALUE_KEYWORD_PATTERN;
+        defaultValueStatementAttributeFormats[DEFAULT_VALUE] = DEFAULT_VALUE_PATTERN;
+        return defaultValueStatementAttributeFormats;
+    }
+
     @Override
     protected DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes) {
         return new AlphanumericDeclarationCobolStatement(
@@ -54,12 +61,5 @@ public class AlphanumericDefaultValueStatementParser extends AbstractStatementPa
             statementAttributes[NAME],
             statementAttributes[DEFAULT_VALUE_DECLARATION].replaceAll(SINGLE_QUOTE, EMPTY_STRING)
         );
-    }
-
-    private String[] getDefaultStatementAttributeFormats() {
-        String[] defaultValueStatementAttributeFormats = new String[2];
-        defaultValueStatementAttributeFormats[DEFAULT_VALUE_KEYWORD] = DEFAULT_VALUE_KEYWORD_PATTERN;
-        defaultValueStatementAttributeFormats[DEFAULT_VALUE] = DEFAULT_VALUE_PATTERN;
-        return defaultValueStatementAttributeFormats;
     }
 }

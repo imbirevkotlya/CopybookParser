@@ -14,5 +14,10 @@ import com.epam.lemon.statement.DataDeclarationCobolStatement;
  */
 public interface StatementParser {
 
+    /**
+     * Main statement parser method, declares the feature to parse certain statement type.
+     * @param statement is a raw statement
+     * @return the domain object parsed from raw statement
+     */
     DataDeclarationCobolStatement parseStatement(String statement);
 }
