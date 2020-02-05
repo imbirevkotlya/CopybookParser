@@ -1,6 +1,7 @@
 package com.epam.lemon.parser.statement.group;
 
 import com.epam.lemon.copybook.StatementIterator;
+import com.epam.lemon.exception.InvalidGroupDeclarationException;
 import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.parser.statement.StatementParser;
 import com.epam.lemon.parser.statement.registry.StatementParserRegistry;
@@ -81,6 +82,9 @@ public class GroupStatementParser extends ParentFieldParser {
                 statementIterator.previous();
                 break;
             }
+        }
+        if (childrenStatements.isEmpty()) {
+            throw new InvalidGroupDeclarationException();
         }
         return childrenStatements;
     }
