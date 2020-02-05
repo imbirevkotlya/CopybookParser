@@ -112,4 +112,62 @@ class TestCopybookFactory {
     static TestCopybookCharacteristics buildCopybookWithInvalidDefaultValueFormat() {
         return new TestCopybookCharacteristics(INVALID_TEST_PATH + "/default-value/DEFVALUEINVFMT.cpy");
     }
+
+    static TestCopybookCharacteristics buildCopybookWithNestedGroups() {
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        GroupDataDeclarationCobolStatement parentStatement = new GroupDataDeclarationCobolStatement(1, "EMP-RECORD");
+        GroupDataDeclarationCobolStatement subGroupStatement = new GroupDataDeclarationCobolStatement(5, "EMP-GROUP");
+        subGroupStatement.addChildrenStatement(new IntegerDeclarationCobolStatement(15, 2, "EMP-NAME"));
+        parentStatement.addChildrenStatement(subGroupStatement);
+        cobolStatements.add(parentStatement);
+        return new TestCopybookCharacteristics(VALID_TEST_PATH + "/group/nested-group/NESGROUP.cpy", new Copybook(cobolStatements));
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithNestedSubGroups() {
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        GroupDataDeclarationCobolStatement parentStatement = new GroupDataDeclarationCobolStatement(1, "EMP-RECORD");
+        GroupDataDeclarationCobolStatement subGroupStatement = new GroupDataDeclarationCobolStatement(5, "EMP-GROUP");
+        subGroupStatement.addChildrenStatement(new IntegerDeclarationCobolStatement(15, 2, "EMP-NAME"));
+        parentStatement.addChildrenStatement(subGroupStatement);
+        subGroupStatement = new GroupDataDeclarationCobolStatement(5, "EMP-GROUP2");
+        subGroupStatement.addChildrenStatement(new AlphanumericDeclarationCobolStatement(10, 2, "EMP-SURNAME"));
+        parentStatement.addChildrenStatement(subGroupStatement);
+        cobolStatements.add(parentStatement);
+        return new TestCopybookCharacteristics(VALID_TEST_PATH + "/group/nested-group/NESGROUP2.cpy", new Copybook(cobolStatements));
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithSeveralNestedSubGroups() {
+        List<DataDeclarationCobolStatement> cobolStatements = buildParentStatementWithSubGroups("EMP-RECORD");
+        return new TestCopybookCharacteristics(VALID_TEST_PATH + "/group/nested-group/NESGROUP3.cpy", new Copybook(cobolStatements));
+    }
+
+    private static List<DataDeclarationCobolStatement> buildParentStatementWithSubGroups(String rootName) {
+        List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
+        GroupDataDeclarationCobolStatement parentStatement = new GroupDataDeclarationCobolStatement(1, rootName);
+        GroupDataDeclarationCobolStatement subGroupStatement = new GroupDataDeclarationCobolStatement(5, "EMP-GROUP");
+        subGroupStatement.addChildrenStatement(new IntegerDeclarationCobolStatement(15, 2, "EMP-NAME"));
+        GroupDataDeclarationCobolStatement secondLevelSubGroup = new GroupDataDeclarationCobolStatement(15, "EMP-SUBGROUP");
+        secondLevelSubGroup.addChildrenStatement(new IntegerDeclarationCobolStatement(20,2, "EMP-NAME"));
+        subGroupStatement.addChildrenStatement(secondLevelSubGroup);
+        parentStatement.addChildrenStatement(subGroupStatement);
+        subGroupStatement = new GroupDataDeclarationCobolStatement(5, "EMP-GROUP2");
+        subGroupStatement.addChildrenStatement(new AlphanumericDeclarationCobolStatement(10, 2, "EMP-SURNAME"));
+        parentStatement.addChildrenStatement(subGroupStatement);
+        cobolStatements.add(parentStatement);
+        return cobolStatements;
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithSeveralGeneralGroups() {
+        List<DataDeclarationCobolStatement> cobolStatements = buildParentStatementWithSubGroups("EMP-RECORD");
+        cobolStatements.addAll(buildParentStatementWithSubGroups("EMP-RECORD2"));
+        return new TestCopybookCharacteristics(VALID_TEST_PATH + "/group/nested-group/NESGROUP4.cpy", new Copybook(cobolStatements));
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithGroupWithoutAnyChildren() {
+        return new TestCopybookCharacteristics(INVALID_TEST_PATH + "/group/nested-group/NESGROUPINV.cpy");
+    }
+
+    static TestCopybookCharacteristics buildCopybookWithSubGroupWithoutChildren() {
+        return new TestCopybookCharacteristics(INVALID_TEST_PATH + "/group/nested-group/NESGROUPINV2.cpy");
+    }
 }

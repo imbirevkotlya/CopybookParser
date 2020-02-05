@@ -3,6 +3,7 @@ package com.epam.lemon.parser;
 import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.copybook.StatementIterator;
 import com.epam.lemon.exception.InvalidDefaultValueException;
+import com.epam.lemon.exception.InvalidGroupDeclarationException;
 import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.parser.statement.registry.ConstructorParserRegistry;
 import com.epam.lemon.parser.statement.registry.StatementParserRegistry;
@@ -24,6 +25,11 @@ public class ParserTest {
     @Test
     public void parseCopybook_withNumericValues() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithNumericDefinition();
+
+        assertCopybook(testCopybookCharacteristics);
+    }
+
+    private void assertCopybook(TestCopybookCharacteristics testCopybookCharacteristics) throws IOException {
         StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
         Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
@@ -34,6 +40,11 @@ public class ParserTest {
     @Test(expected = InvalidStatementFormatException.class)
     public void parseCopybook_invalidNumericFieldDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidNumericFieldDeclaration();
+
+        tryToParseCopybook(testCopybookCharacteristics);
+    }
+
+    private void tryToParseCopybook(TestCopybookCharacteristics testCopybookCharacteristics) throws IOException {
         StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
         new CopybookParser(statementParserRegistry, statementIterator).parse();
@@ -42,150 +53,161 @@ public class ParserTest {
     @Test
     public void parseCopybook_alphanumericValues() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithAlphanumericDefinition();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
-
-        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+        assertCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parseCopybook_invalidAlphanumericFieldDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidAlphanumericFieldDeclaration();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test
     public void parseCopybook_groupValues() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithGroupFieldDefinition();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
-
-        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+        assertCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parseCopybook_invalidGroupFieldDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidGroupFieldDeclaration();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test
     public void parseCopybook_withCompFields() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithCompFields();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
-
-        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+        assertCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidCompFieldDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidCompFieldDeclaration();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidCompFieldDataFormatDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidCompFieldDataFormatDeclaration();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test
     public void parseCopybook_withComp1Fields() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithComp1Value();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
-
-        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+        assertCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidComp1FieldDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidComp1Value();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test
     public void parseCopybook_withComp2Fields() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithComp2Value();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
-
-        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+        assertCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidComp2FieldDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidComp2Value();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidComp2FieldDataFormatDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidComp2ValueFormat();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test
     public void parseCopybook_withComp3Fields() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithComp3Value();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
-
-        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+        assertCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidComp3FieldDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidComp3Value();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
-
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test
     public void parse_withDefaultValues() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithDefaultValues();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        Copybook copybook = new CopybookParser(statementParserRegistry, statementIterator).parse();
-
-        Assert.assertEquals(copybook, testCopybookCharacteristics.getExpectedCopybook());
+        assertCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidDefaultValueException.class)
     public void parse_invalidDefaultValueLengthDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidDefaultValueLength();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 
     @Test(expected = InvalidStatementFormatException.class)
     public void parse_invalidDefaultValueFormatDeclaration() throws IOException {
         TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithInvalidDefaultValueFormat();
-        StatementIterator statementIterator = testCopybookCharacteristics.createIteratorFromFile();
 
-        new CopybookParser(statementParserRegistry, statementIterator).parse();
+        tryToParseCopybook(testCopybookCharacteristics);
+    }
+
+
+    @Test
+    public void parse_nestedGroups() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithNestedGroups();
+
+        assertCopybook(testCopybookCharacteristics);
+    }
+
+    @Test
+    public void parse_nestedSubGroups() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithNestedSubGroups();
+
+        assertCopybook(testCopybookCharacteristics);
+    }
+
+    @Test
+    public void parse_severalNestedSubGroups() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithSeveralNestedSubGroups();
+
+        assertCopybook(testCopybookCharacteristics);
+    }
+
+    @Test
+    public void parse_severalGeneralGroups() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithSeveralGeneralGroups();
+
+        assertCopybook(testCopybookCharacteristics);
+    }
+
+    @Test(expected = InvalidGroupDeclarationException.class)
+    public void parse_nestedGroupsWithoutChildren() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithSubGroupWithoutChildren();
+
+        tryToParseCopybook(testCopybookCharacteristics);
+    }
+
+    @Test(expected = InvalidGroupDeclarationException.class)
+    public void parse_generalCopybookWithoutAnyChildren() throws IOException {
+        TestCopybookCharacteristics testCopybookCharacteristics = TestCopybookFactory.buildCopybookWithGroupWithoutAnyChildren();
+
+        tryToParseCopybook(testCopybookCharacteristics);
     }
 }
