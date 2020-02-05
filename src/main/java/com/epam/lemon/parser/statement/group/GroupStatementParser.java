@@ -62,8 +62,7 @@ public class GroupStatementParser extends ParentFieldParser {
 
     private List<DataDeclarationCobolStatement> parseChildrenStatements(Integer groupLevel) {
         List<DataDeclarationCobolStatement> childrenStatements = new ArrayList<>();
-        List<StatementParser> statementParsers = statementParserRegistry.registerStatementParsers(
-            statementParserRegistry, statementIterator);
+        List<StatementParser> statementParsers = statementParserRegistry.registerStatementParsers(statementIterator);
         while (statementIterator.hasNext()) {
             String copybookStatement = statementIterator.next();
             String[] statementAttributes = copybookStatement.split(SPACE);

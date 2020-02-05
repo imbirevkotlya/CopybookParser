@@ -27,21 +27,19 @@ public class ConstructorParserRegistry implements StatementParserRegistry {
    * {@inheritDoc}
    */
   @Override
-  public List<StatementParser> registerStatementParsers(StatementParserRegistry statementRegistry,
-                                                        StatementIterator statementIterator) {
+  public List<StatementParser> registerStatementParsers(StatementIterator statementIterator) {
 
     List<StatementParser> statementParsers = new ArrayList<>();
-    statementParsers.addAll(registerGroupParsers(statementRegistry, statementIterator));
+    statementParsers.addAll(registerGroupParsers(statementIterator));
     statementParsers.addAll(registerAlphanumericParsers());
     statementParsers.addAll(registerNumericParsers());
     return statementParsers;
   }
 
-  private List<StatementParser> registerGroupParsers(StatementParserRegistry statementRegistry,
-                                                     StatementIterator statementIterator) {
+  private List<StatementParser> registerGroupParsers(StatementIterator statementIterator) {
 
     List<StatementParser> groupParsers = new ArrayList<>();
-    groupParsers.add(new GroupStatementParser(statementIterator, statementRegistry));
+    groupParsers.add(new GroupStatementParser(statementIterator, this));
     return groupParsers;
   }
 

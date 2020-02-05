@@ -31,8 +31,7 @@ public class CopybookParser {
   public CopybookParser(StatementParserRegistry statementParserRegistry,
                         StatementIterator statementIterator) {
 
-    statementParsers = statementParserRegistry.registerStatementParsers(statementParserRegistry,
-                                                                        statementIterator);
+    statementParsers = statementParserRegistry.registerStatementParsers(statementIterator);
     this.statementIterator = statementIterator;
   }
 
