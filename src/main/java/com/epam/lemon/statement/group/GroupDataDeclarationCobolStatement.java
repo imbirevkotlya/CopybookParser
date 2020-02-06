@@ -30,6 +30,12 @@ public class GroupDataDeclarationCobolStatement implements DataDeclarationCobolS
         this.childrenStatements = new ArrayList<>();
     }
 
+    public GroupDataDeclarationCobolStatement(Integer level, String name, List<DataDeclarationCobolStatement> childrenStatements) {
+        this.level = level;
+        this.name = name;
+        this.childrenStatements = childrenStatements;
+    }
+
     /**
      * {@inheritDoc}
      */

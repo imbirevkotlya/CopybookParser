@@ -1,11 +1,9 @@
 package com.epam.lemon.parser.statement.numeric;
 
 import com.epam.lemon.parser.statement.AbstractStatementParser;
-import com.epam.lemon.parser.statement.ArrayMerger;
+import com.epam.lemon.parser.statement.util.ArrayMerger;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 import com.epam.lemon.statement.numeric.IntegerDeclarationCobolStatement;
-
-import java.util.function.Function;
 
 /**
  * Class represents the parsing mechanism for the integer default statements (simple wrapper under the usual
@@ -39,9 +37,11 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
      */
     @Override
     protected String[] getNecessaryStatementAttributeFormats() {
-        String[] necessaryStatementAttributeFormats = integerStatementParser.getNecessaryStatementAttributeFormats();
+        String[] necessaryStatementAttributeFormats = integerStatementParser
+                                                        .getNecessaryStatementAttributeFormats();
         String[] defaultValueStatementAttributeFormats = getDefaultStatementAttributeFormats();
-        ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats, defaultValueStatementAttributeFormats);
+        ArrayMerger arrayMerger = new ArrayMerger(necessaryStatementAttributeFormats,
+                                                  defaultValueStatementAttributeFormats);
         return arrayMerger.merge();
     }
 
@@ -52,16 +52,13 @@ public class IntegerDefaultValueStatementParser extends AbstractStatementParser 
         return defaultValueStatementAttributeFormats;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new IntegerDeclarationCobolStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[LENGTH_DECLARATION].length(),
-                statementAttributes[NAME],
-                Integer.parseInt(statementAttributes[DEFAULT_VALUE_DECLARATION])
+    protected DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes) {
+        return new IntegerDeclarationCobolStatement(
+            Integer.parseInt(statementAttributes[LEVEL]),
+            statementAttributes[LENGTH_DECLARATION].length(),
+            statementAttributes[NAME],
+            Integer.parseInt(statementAttributes[DEFAULT_VALUE_DECLARATION])
         );
     }
 }

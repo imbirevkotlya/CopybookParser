@@ -1,10 +1,6 @@
 package com.epam.lemon.parser.statement;
 
-import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-import com.epam.lemon.statement.group.GroupDataDeclarationCobolStatement;
-
-import java.util.function.Function;
 
 /**
  * Utility class to simplify the statement parser implementation.
@@ -22,15 +18,9 @@ public abstract class AbstractStatementParser implements StatementParser {
      */
     protected static final String NAME_PATTERN = "^[^.]+$";
 
-    private static final String SPACE = " ";
+    protected static final String SPACE = " ";
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean matchesStatement(String statement) {
-        return matchesStatement(statement.split(SPACE));
-    }
+    protected static final String VALUE_DECLARATION_KEYWORD = "PIC";
 
     private boolean matchesStatement(String[] statementAttributes) {
         String[] necessaryStatementAttributeFormats = getNecessaryStatementAttributeFormats();
@@ -86,40 +76,24 @@ public abstract class AbstractStatementParser implements StatementParser {
      * {@inheritDoc}
      */
     @Override
-    public DataDeclarationCobolStatement parseStatementWithLinkToGroup(GroupDataDeclarationCobolStatement parentStatement, String statement) throws InvalidStatementFormatException {
-        DataDeclarationCobolStatement childStatement = parseStatement(statement);
-        parentStatement.addChildrenStatement(childStatement);
-        return parentStatement;
-    }
-
-    /**
-     * Should return the ability to construct the declaration statement. Generally, it can be some
-     * factory method, constructor or something else.
-     *
-     * Example:
-     *
-     * return statementAttributes -> new AlphanumericDeclarationCobolStatement(
-     *   Integer.parseInt(statementAttributes[0]),
-     *   statementAttributes[3].length(),
-     *    statementAttributes[1]
-     * );
-     *
-     * Statement attributes description and declaration can be found in method above:
-     * getNecessaryStatementAttributeFormats()
-     *
-     * @return the function from the statement declared attributes to the built and ready to use statement
-     */
-    protected abstract Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DataDeclarationCobolStatement parseStatement(String statement) throws InvalidStatementFormatException {
-        String[] statementAttributes = statement.split(SPACE);
+    public DataDeclarationCobolStatement parseStatement(String statement) {
+        String[] statementAttributes = splitStatement(statement);
         if (matchesStatement(statementAttributes)) {
-            return getBuildStatementFunction().apply(statementAttributes);
+            return parseMatchedStatement(statementAttributes);
         }
-        throw new InvalidStatementFormatException(statement);
+        return null;
     }
+
+    protected String[] splitStatement(String statement) {
+        return statement.split(SPACE);
+    }
+
+    /**
+     * Method declares the logic to parse statement (by it's attributes): level, name and so on.
+     * The statement attributes are defined in the method getNecessaryStatementAttributeFormats.
+     *
+     * @param statementAttributes is a statement attributes
+     * @return a fully parsed domain object from statementAttributes
+     */
+    protected abstract DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes);
 }
