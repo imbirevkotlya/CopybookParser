@@ -1,11 +1,8 @@
 package com.epam.lemon.parser.statement.numeric;
 
-import com.epam.lemon.parser.CopybookParser;
 import com.epam.lemon.parser.statement.AbstractStatementParser;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 import com.epam.lemon.statement.numeric.IntegerDeclarationCobolStatement;
-
-import java.util.function.Function;
 
 /**
  * COBOL integer statement contains only 4 attributes: level, name, PIC keyword, length declaration (only 9 are supported)
@@ -41,20 +38,18 @@ public class IntegerStatementParser extends AbstractStatementParser {
         String[] integerStatementAttributes = new String[4];
         integerStatementAttributes[LEVEL] = LEVEL_PATTERN;
         integerStatementAttributes[NAME] = NAME_PATTERN;
-        integerStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
+        integerStatementAttributes[VALUE_DECLARATION_KEYWORD] = AbstractStatementParser.VALUE_DECLARATION_KEYWORD;
         integerStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
         return integerStatementAttributes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new IntegerDeclarationCobolStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[LENGTH_DECLARATION].length(),
-                statementAttributes[NAME]
+    protected DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes) {
+        return new IntegerDeclarationCobolStatement(
+            Integer.parseInt(statementAttributes[LEVEL]),
+            statementAttributes[LENGTH_DECLARATION].length(),
+            statementAttributes[NAME]
         );
     }
+
 }

@@ -107,7 +107,7 @@ public class CopybookStatementIterator implements StatementIterator {
     @Override
     public String previous() {
         if (hasPrevious()) {
-            return statements.get(cursor--);
+            return statements.get(--cursor);
         }
         throw new NoSuchElementException();
     }

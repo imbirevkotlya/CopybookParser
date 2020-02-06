@@ -1,5 +1,7 @@
-package com.epam.lemon.parser.statement;
+package com.epam.lemon.parser.statement.registry;
 
+import com.epam.lemon.copybook.StatementIterator;
+import com.epam.lemon.parser.statement.StatementParser;
 import java.util.List;
 
 /**
@@ -12,7 +14,8 @@ public interface StatementParserRegistry {
   /**
    * The all ready to work statement parsers available now.
    * @return the list of statement parsers
+   * @param statementIterator is a user statement iterator for copybook statement source
    */
-  List<StatementParser> registerStatementParsers();
+  List<StatementParser> registerStatementParsers(StatementIterator statementIterator);
 
 }

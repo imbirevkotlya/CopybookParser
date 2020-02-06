@@ -1,11 +1,9 @@
 package com.epam.lemon.parser.statement.alphanumeric;
 
 import com.epam.lemon.parser.statement.AbstractStatementParser;
-import com.epam.lemon.parser.statement.ArrayMerger;
+import com.epam.lemon.parser.statement.util.ArrayMerger;
 import com.epam.lemon.statement.alphanumeric.AlphanumericDeclarationCobolStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-
-import java.util.function.Function;
 
 /**
  * Class represents the parsing mechanism for the alphanumeric default statements (simple wrapper under the usual
@@ -55,16 +53,13 @@ public class AlphanumericDefaultValueStatementParser extends AbstractStatementPa
         return defaultValueStatementAttributeFormats;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new AlphanumericDeclarationCobolStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[LENGTH_DECLARATION].length(),
-                statementAttributes[NAME],
-                statementAttributes[DEFAULT_VALUE_DECLARATION].replaceAll(SINGLE_QUOTE, EMPTY_STRING)
+    protected DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes) {
+        return new AlphanumericDeclarationCobolStatement(
+            Integer.parseInt(statementAttributes[LEVEL]),
+            statementAttributes[LENGTH_DECLARATION].length(),
+            statementAttributes[NAME],
+            statementAttributes[DEFAULT_VALUE_DECLARATION].replaceAll(SINGLE_QUOTE, EMPTY_STRING)
         );
     }
 }

@@ -1,11 +1,8 @@
 package com.epam.lemon.parser.statement.numeric.computational;
 
-import com.epam.lemon.parser.CopybookParser;
 import com.epam.lemon.parser.statement.AbstractStatementParser;
 import com.epam.lemon.statement.numeric.computational.CompDataDeclarationStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-
-import java.util.function.Function;
 
 public abstract class ComputationalStatementParser extends AbstractStatementParser {
 
@@ -25,10 +22,19 @@ public abstract class ComputationalStatementParser extends AbstractStatementPars
         String[] compStatementAttributes = new String[5];
         compStatementAttributes[LEVEL] = LEVEL_PATTERN;
         compStatementAttributes[NAME] = NAME_PATTERN;
-        compStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
+        compStatementAttributes[VALUE_DECLARATION_KEYWORD] = AbstractStatementParser.VALUE_DECLARATION_KEYWORD;
         compStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
         compStatementAttributes[COMPUTATION_DECLARATION] = getComputationalKeywordPattern();
         return compStatementAttributes;
+    }
+
+    @Override
+    protected DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes) {
+        return  new CompDataDeclarationStatement(
+            Integer.parseInt(statementAttributes[LEVEL]),
+            statementAttributes[LENGTH_DECLARATION].length(),
+            statementAttributes[NAME]
+        );
     }
 
     /**
@@ -38,15 +44,4 @@ public abstract class ComputationalStatementParser extends AbstractStatementPars
      */
     protected abstract String getComputationalKeywordPattern();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new CompDataDeclarationStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[LENGTH_DECLARATION].length(),
-                statementAttributes[NAME]
-        );
-    }
 }
