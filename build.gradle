@@ -13,7 +13,7 @@ jar {
 }
 
 group 'com.epam.lemon'
-version '1.3-SNAPSHOT'
+version '2.0-SNAPSHOT'
 
 sourceCompatibility = 1.11
 
