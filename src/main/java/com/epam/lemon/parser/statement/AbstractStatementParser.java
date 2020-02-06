@@ -84,7 +84,7 @@ public abstract class AbstractStatementParser implements StatementParser {
         return null;
     }
 
-    private String[] splitStatement(String statement) {
+    protected String[] splitStatement(String statement) {
         return statement.split(SPACE);
     }
 

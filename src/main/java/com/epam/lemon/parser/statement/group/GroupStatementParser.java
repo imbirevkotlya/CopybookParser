@@ -1,6 +1,7 @@
 package com.epam.lemon.parser.statement.group;
 
 import com.epam.lemon.copybook.StatementIterator;
+import com.epam.lemon.exception.InvalidChildStatementLevelException;
 import com.epam.lemon.exception.InvalidGroupDeclarationException;
 import com.epam.lemon.exception.InvalidStatementFormatException;
 import com.epam.lemon.parser.statement.StatementParser;
@@ -25,6 +26,8 @@ public class GroupStatementParser extends ParentFieldParser {
     private static final int NAME = 1;
 
     private final StatementParserRegistry statementParserRegistry;
+
+    private Integer groupLevel;
     /**
      * Main constructor to initialize object with statement iterator.
      *
@@ -49,8 +52,10 @@ public class GroupStatementParser extends ParentFieldParser {
 
     @Override
     protected DataDeclarationCobolStatement parseMatchedStatement(String[] groupStatementAttributes) {
-        Integer groupLevel = parseLevel(groupStatementAttributes[LEVEL]);
-        List<DataDeclarationCobolStatement> childrenStatements = parseChildrenStatements(groupLevel);
+        groupLevel = parseLevel(groupStatementAttributes[LEVEL]);
+        List<StatementParser> statementParsers = statementParserRegistry.registerStatementParsers(statementIterator);
+        List<DataDeclarationCobolStatement> childrenStatements = parseChildrenStatements(statementParsers);
+        checkChildrenSize(childrenStatements);
         return new GroupDataDeclarationCobolStatement(groupLevel,
                                                       groupStatementAttributes[NAME],
                                                       childrenStatements);
@@ -60,33 +65,52 @@ public class GroupStatementParser extends ParentFieldParser {
         return Integer.parseInt(statementAttribute);
     }
 
-    private List<DataDeclarationCobolStatement> parseChildrenStatements(Integer groupLevel) {
+    private List<DataDeclarationCobolStatement> parseChildrenStatements(List<StatementParser> childrenParsers) {
         List<DataDeclarationCobolStatement> childrenStatements = new ArrayList<>();
-        List<StatementParser> statementParsers = statementParserRegistry.registerStatementParsers(statementIterator);
+        DataDeclarationCobolStatement childStatement;
         while (statementIterator.hasNext()) {
             String copybookStatement = statementIterator.next();
-            String[] statementAttributes = copybookStatement.split(SPACE);
-            if (parseLevel(statementAttributes[LEVEL]) > groupLevel) {
-                DataDeclarationCobolStatement childStatement = null;
-                for (StatementParser childParser : statementParsers) {
-                    childStatement = childParser.parseStatement(copybookStatement);
-                    if (childStatement != null) {
-                        childrenStatements.add(childStatement);
-                        break;
-                    }
-                }
-                if (childStatement == null) {
-                    throw new InvalidStatementFormatException(copybookStatement);
-                }
-            }
-            else {
+            try {
+                childStatement = parseChildStatement(copybookStatement, childrenParsers);
+            } catch (InvalidChildStatementLevelException e) {
                 statementIterator.previous();
                 break;
             }
+            childrenStatements.add(childStatement);
         }
+        return childrenStatements;
+    }
+
+    private DataDeclarationCobolStatement parseChildStatement(String statement, List<StatementParser> parsers) {
+        String[] statementAttributes = splitStatement(statement);
+        String childLevel = statementAttributes[LEVEL];
+        if (childLevelHigherGroupLevel(childLevel)) {
+            return parseChildStatementWithSuitableParser(statement, parsers);
+        }
+        throw new InvalidChildStatementLevelException(childLevel, groupLevel);
+    }
+
+    private DataDeclarationCobolStatement parseChildStatementWithSuitableParser(String statement,
+                                                                                List<StatementParser> parsers) {
+        DataDeclarationCobolStatement childStatement;
+        boolean statementWasProcessedWithSuitableParser;
+        for (StatementParser childParser : parsers) {
+            childStatement = childParser.parseStatement(statement);
+            statementWasProcessedWithSuitableParser = (childStatement != null);
+            if (statementWasProcessedWithSuitableParser) {
+                return childStatement;
+            }
+        }
+        throw new InvalidStatementFormatException(statement);
+    }
+
+    private boolean childLevelHigherGroupLevel(String levelAttribute) {
+        return parseLevel(levelAttribute) > groupLevel;
+    }
+
+    private void checkChildrenSize(List<DataDeclarationCobolStatement> childrenStatements) {
         if (childrenStatements.isEmpty()) {
             throw new InvalidGroupDeclarationException();
         }
-        return childrenStatements;
     }
 }
