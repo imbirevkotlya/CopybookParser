@@ -1,11 +1,8 @@
 package com.epam.lemon.parser.statement.alphanumeric;
 
-import com.epam.lemon.parser.CopybookParser;
 import com.epam.lemon.parser.statement.AbstractStatementParser;
 import com.epam.lemon.statement.alphanumeric.AlphanumericDeclarationCobolStatement;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
-
-import java.util.function.Function;
 
 /**
  * COBOL alphanumeric statement contains only 4 attributes: level, name, PIC keyword, length declaration (only X are supported)
@@ -41,20 +38,18 @@ public class AlphanumericStatementParser extends AbstractStatementParser {
         String[] alphanumericStatementAttributes = new String[4];
         alphanumericStatementAttributes[LEVEL] = LEVEL_PATTERN;
         alphanumericStatementAttributes[NAME] = NAME_PATTERN;
-        alphanumericStatementAttributes[VALUE_DECLARATION_KEYWORD] = CopybookParser.VALUE_DECLARATION_KEYWORD;
+        alphanumericStatementAttributes[VALUE_DECLARATION_KEYWORD] = AbstractStatementParser.VALUE_DECLARATION_KEYWORD;
         alphanumericStatementAttributes[LENGTH_DECLARATION] = LENGTH_DECLARATION_PATTERN;
         return alphanumericStatementAttributes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Function<String[], DataDeclarationCobolStatement> getBuildStatementFunction() {
-        return statementAttributes -> new AlphanumericDeclarationCobolStatement(
-                Integer.parseInt(statementAttributes[LEVEL]),
-                statementAttributes[LENGTH_DECLARATION].length(),
-                statementAttributes[NAME]
+    protected DataDeclarationCobolStatement parseMatchedStatement(String[] statementAttributes) {
+        return new AlphanumericDeclarationCobolStatement(
+            Integer.parseInt(statementAttributes[LEVEL]),
+            statementAttributes[LENGTH_DECLARATION].length(),
+            statementAttributes[NAME]
         );
     }
+
 }
