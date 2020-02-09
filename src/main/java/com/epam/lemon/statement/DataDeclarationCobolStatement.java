@@ -1,5 +1,7 @@
 package com.epam.lemon.statement;
 
+import com.epam.lemon.PublicApi;
+
 /**
  * Main interface of the COBOL copybook statement of the data declaration division (or environment division).
  *
@@ -17,18 +19,21 @@ public interface DataDeclarationCobolStatement {
      *
      * @return the level of the data declaration cobol statement
      */
+    @PublicApi
     Integer getLevel();
 
     /**
      * Name of the cobol data statement (can be group name, field name, redefines field and so on).
      * @return the name of the data declaration cobol statement
      */
+    @PublicApi
     String getName();
 
     /**
      * Type of the statement to cast it and use more specific statement implementation abilities.
      * @return the statement type
      */
+    @PublicApi
     StatementType getStatementType();
 
 }

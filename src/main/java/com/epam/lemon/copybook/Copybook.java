@@ -1,7 +1,9 @@
 package com.epam.lemon.copybook;
 
+import com.epam.lemon.PublicApi;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,6 +58,9 @@ public class Copybook {
         this.cobolStatements = cobolStatements;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,8 +69,20 @@ public class Copybook {
         return cobolStatements.equals(copybook.cobolStatements);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(cobolStatements);
+    }
+
+    /**
+     * Method, returns the all copybook statements declaration.
+     * @return the all copybook internals.
+     */
+    @PublicApi
+    public List<DataDeclarationCobolStatement> getCobolStatements() {
+       return new ArrayList<>(cobolStatements);
     }
 }
