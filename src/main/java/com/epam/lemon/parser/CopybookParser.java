@@ -1,5 +1,6 @@
 package com.epam.lemon.parser;
 
+import com.epam.lemon.PublicApi;
 import com.epam.lemon.copybook.Copybook;
 import com.epam.lemon.copybook.StatementIterator;
 import com.epam.lemon.exception.InvalidStatementFormatException;
@@ -28,6 +29,7 @@ public class CopybookParser {
    * @param statementParserRegistry is a user provided statement parser source
    * @param statementIterator is a user provided statement source
    */
+  @PublicApi
   public CopybookParser(StatementParserRegistry statementParserRegistry,
                         StatementIterator statementIterator) {
 
@@ -39,6 +41,7 @@ public class CopybookParser {
    * Method for parsing the copybook statements from user provided statement source.
    * @return the fully completed copybook object with parsed statements
    */
+  @PublicApi
   public Copybook parse() {
     List<DataDeclarationCobolStatement> cobolStatements = new ArrayList<>();
     while (statementIterator.hasNext()) {

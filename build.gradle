@@ -12,8 +12,10 @@ jar {
     }
 }
 
+mainClassName = 'com.epam.lemon.Main'
+
 group 'com.epam.lemon'
-version '2.0-SNAPSHOT'
+version '2.1-SNAPSHOT'
 
 sourceCompatibility = 1.11
 
