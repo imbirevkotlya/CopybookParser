@@ -42,7 +42,7 @@ Prerequisites:
 
 ### Versioning
 
-- Now, the 2.1-SNAPSHOT version is released (add nested groups support, minor improvements of tests and stability,
+- Now, the 2.2-SNAPSHOT version is released (add nested groups support, minor improvements of tests and stability,
 add ability to provide user defined copybook statement source and statement parser registry mechanism)
 - In development stage: 3.0-RELEASE version with comments in copybook support
 - ...
