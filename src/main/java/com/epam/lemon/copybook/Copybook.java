@@ -3,6 +3,9 @@ package com.epam.lemon.copybook;
 import com.epam.lemon.PublicApi;
 import com.epam.lemon.statement.DataDeclarationCobolStatement;
 
+import com.epam.lemon.statement.RegularDataDeclarationCobolStatement;
+import com.epam.lemon.statement.StatementType;
+import com.epam.lemon.statement.group.GroupDataDeclarationCobolStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -84,5 +87,45 @@ public class Copybook {
     @PublicApi
     public List<DataDeclarationCobolStatement> getCobolStatements() {
        return new ArrayList<>(cobolStatements);
+    }
+
+    /**
+     * The main purpose of the method is returning the flat copybook structure field declarations,
+     * which contains real value definition, not grouping or something else.
+     *
+     * For example:
+     * If copybook contains one group statement with several child declarations, the children
+     * statement declarations will be returned.
+     *
+     * @return the value contains flat field declaration list
+     */
+    @PublicApi
+    public List<RegularDataDeclarationCobolStatement> getValueContainsCobolStatements() {
+        return getRegularDataDeclarationCobolStatements(getCobolStatements());
+    }
+
+    private List<RegularDataDeclarationCobolStatement> getGroupFlatStructure(
+                                               GroupDataDeclarationCobolStatement parentStatement) {
+
+        return getRegularDataDeclarationCobolStatements(parentStatement.getChildrenStatements());
+    }
+
+    private List<RegularDataDeclarationCobolStatement> getRegularDataDeclarationCobolStatements(
+                                                   List<DataDeclarationCobolStatement> statements) {
+
+        List<RegularDataDeclarationCobolStatement> regularStatements = new ArrayList<>();
+        for (DataDeclarationCobolStatement cobolStatement : statements) {
+            if (isGroupStatement(cobolStatement)) {
+                regularStatements
+                    .addAll(getGroupFlatStructure((GroupDataDeclarationCobolStatement) cobolStatement));
+            } else {
+                regularStatements.add((RegularDataDeclarationCobolStatement) cobolStatement);
+            }
+        }
+        return regularStatements;
+    }
+
+    private boolean isGroupStatement(DataDeclarationCobolStatement cobolStatement) {
+        return StatementType.GROUP_STATEMENT.equals(cobolStatement.getStatementType());
     }
 }
