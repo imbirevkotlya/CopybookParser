@@ -128,4 +128,19 @@ public class Copybook {
     private boolean isGroupStatement(DataDeclarationCobolStatement cobolStatement) {
         return StatementType.GROUP_STATEMENT.equals(cobolStatement.getStatementType());
     }
+
+    /**
+     * Method to return the record length of the copybook.
+     * @return the symbols length of one record in dataset, which this copybook can describe.
+     */
+    @PublicApi
+    public Integer getRecordLength() {
+        List<RegularDataDeclarationCobolStatement> leafStatements = getValueContainsCobolStatements();
+        Integer recordLength = 0;
+        for (RegularDataDeclarationCobolStatement leafStatement : leafStatements) {
+            Integer fieldLength = leafStatement.getLength();
+            recordLength += fieldLength;
+        }
+        return recordLength;
+    }
 }
