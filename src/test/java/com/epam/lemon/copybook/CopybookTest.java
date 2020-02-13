@@ -22,6 +22,8 @@ public class CopybookTest {
 
   private static final int LENGTH = 5;
 
+  private static final int EMPTY = 0;
+
   private Copybook copybook;
 
   @Test
@@ -77,15 +79,69 @@ public class CopybookTest {
 
     List<RegularDataDeclarationCobolStatement> actualStatements = emptyCopybook.getValueContainsCobolStatements();
 
-    Assert.assertEquals(0, actualStatements.size());
+    Assert.assertEquals(EMPTY, actualStatements.size());
   }
 
   @Test
-  public void getFlaStructure_onlyValueContainsStatements() {
+  public void getFlatStructure_onlyValueContainsStatements() {
     List<DataDeclarationCobolStatement> valueContainsStatements = getChildren();
 
     copybook = new Copybook(valueContainsStatements);
 
     Assert.assertEquals(valueContainsStatements, copybook.getValueContainsCobolStatements());
+  }
+
+  @Test
+  public void getRecordLength() {
+    List<DataDeclarationCobolStatement> statements = getChildren();
+
+    copybook = new Copybook(statements);
+
+    Assert.assertEquals(LENGTH, copybook.getRecordLength().intValue());
+  }
+
+  @Test
+  public void getRecordLength_withGroupStatement() {
+    List<DataDeclarationCobolStatement> children = getChildren();
+    copybook = new Copybook(Collections
+        .singletonList(new GroupDataDeclarationCobolStatement(GROUP_LEVEL, GROUP_NAME, children)));
+
+    Integer recordLength = copybook.getRecordLength();
+
+    Assert.assertEquals(LENGTH, recordLength.intValue());
+  }
+
+  @Test
+  public void getRecordLength_withNestedGroupStatements() {
+    List<DataDeclarationCobolStatement> firstLevelChildren = new ArrayList<>();
+    List<DataDeclarationCobolStatement> secondLevelChildren = getChildren();
+    firstLevelChildren.add(new GroupDataDeclarationCobolStatement(SUBGROUP_LEVEL, SUBGROUP_NAME, secondLevelChildren));
+    copybook = new Copybook(Collections
+        .singletonList(new GroupDataDeclarationCobolStatement(GROUP_LEVEL, GROUP_NAME, firstLevelChildren)));
+
+    Integer recordLength = copybook.getRecordLength();
+
+    Assert.assertEquals(LENGTH, recordLength.intValue());
+  }
+
+  @Test
+  public void getRecordLength_withSeveralGroupStatements() {
+    List<DataDeclarationCobolStatement> secondLevelChildren = getChildren();
+    List<DataDeclarationCobolStatement> firstLevelChildren = new ArrayList<>();
+    firstLevelChildren.add(new GroupDataDeclarationCobolStatement(SUBGROUP_LEVEL, SUBGROUP_NAME, secondLevelChildren));
+    firstLevelChildren.add(new GroupDataDeclarationCobolStatement(SUBGROUP_LEVEL, SUBGROUP_NAME, secondLevelChildren));
+    copybook = new Copybook(Collections
+        .singletonList(new GroupDataDeclarationCobolStatement(GROUP_LEVEL, GROUP_NAME, firstLevelChildren)));
+
+    Integer recordLength = copybook.getRecordLength();
+
+    Assert.assertEquals(LENGTH + LENGTH, recordLength.intValue());
+  }
+
+  @Test
+  public void getRecordLength_emptyStatements() {
+    Copybook emptyCopybook = new Copybook(Collections.emptyList());
+
+    Assert.assertEquals(EMPTY, emptyCopybook.getRecordLength().intValue());
   }
 }
